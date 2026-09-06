@@ -1,4 +1,4 @@
-# Open Pages
+# cocofhu的博客
 
 A Typora-like editor that publishes with Hexo to GitHub Pages.
 
