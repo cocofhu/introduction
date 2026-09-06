@@ -33,7 +33,7 @@ work:
         - match: 流程图
           tip: 快速理解后端流程
         - match: Approving
-          tip: "因为最开始这个工作流完成之后什么也不管，每天就同意审批，所以就取名叫了approving, 嘿嘿，还是要认真确认啊"
+          tip: "还没来得及整理，因为最开始这个工作流完成之后什么也不管，每天就同意审批，所以就取名叫了approving, 嘿嘿，还是要认真确认啊"
         - match: 很多项目
           tip: "我是一个NAS玩家，我有全套的AIO服务器， 有自己的基建：CI/CD、Repo、工具链等，如果有兴趣可以和我交流"
         - match: "10 秒内"
@@ -100,7 +100,9 @@ recent:
         - match: 知道进度
           tip: 你手头上有哪些事情，进度怎么样了，xxxx不做了停一下，xxxx改一下
         - match: 任务并行
-          tip: "Hi, Jarvis"
+          tip: "Hi, Jarvis！"
+        - match: 收到
+          tip: GPTLive做得还不错
     - date: 2026
       title: 追番，打游戏
       tag: Game
@@ -117,7 +119,7 @@ recent:
       title: 作为人类写点什么
       tag: NOTE
       url: ""
-      excerpt: 写点什么，在各大博客完整投稿下。
+      excerpt: 写点什么，在各大博客网站投稿下。
       hovers:
         - match: 写点什么
           tip: 我在读书的那个时候还写博客的，好久没写了
