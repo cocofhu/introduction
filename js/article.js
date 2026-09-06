@@ -1,16 +1,64 @@
 (() => {
+  const THEME_KEY = "cocofhu-article-theme";
+  const root = document.documentElement;
+
+  function readTheme() {
+    try {
+      const saved = localStorage.getItem(THEME_KEY);
+      if (saved === "light" || saved === "dark") return saved;
+    } catch (_) {}
+    return "dark";
+  }
+
+  function applyTheme(theme, persist) {
+    const next = theme === "light" ? "light" : "dark";
+    root.setAttribute("data-theme", next);
+    const seg = document.getElementById("artThemeSeg");
+    if (seg) {
+      const isLight = next === "light";
+      seg.setAttribute("aria-checked", isLight ? "true" : "false");
+      seg.setAttribute(
+        "aria-label",
+        isLight ? "当前浅色主题，点击切换为深色" : "当前深色主题，点击切换为浅色"
+      );
+    }
+    if (persist) {
+      try {
+        localStorage.setItem(THEME_KEY, next);
+      } catch (_) {}
+    }
+  }
+
+  // Sync from storage (head script may already have set it)
+  applyTheme(readTheme(), false);
+
+  const seg = document.getElementById("artThemeSeg");
+  if (seg) {
+    const toggle = () => {
+      const cur = root.getAttribute("data-theme") === "light" ? "light" : "dark";
+      applyTheme(cur === "dark" ? "light" : "dark", true);
+    };
+    seg.addEventListener("click", toggle);
+    seg.addEventListener("keydown", (event) => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        toggle();
+      }
+    });
+  }
+
   const toc = document.getElementById("artToc");
-  const toggle = document.getElementById("artTocToggle");
+  const toggleBtn = document.getElementById("artTocToggle");
   const links = [...document.querySelectorAll(".art-toc-nav a[href^='#']")];
 
   function setOpen(open) {
-    if (!toc || !toggle) return;
+    if (!toc || !toggleBtn) return;
     toc.classList.toggle("is-open", open);
-    toggle.setAttribute("aria-expanded", open ? "true" : "false");
+    toggleBtn.setAttribute("aria-expanded", open ? "true" : "false");
   }
 
-  if (toggle && toc) {
-    toggle.addEventListener("click", () => {
+  if (toggleBtn && toc) {
+    toggleBtn.addEventListener("click", () => {
       setOpen(!toc.classList.contains("is-open"));
     });
     toc.addEventListener("click", (event) => {

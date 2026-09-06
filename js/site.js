@@ -124,11 +124,15 @@
       try { starIntro.load(); } catch (_) {}
     }
 
-    function playVid(el) {
+    function playVid(el, onFail) {
       if (!el) return;
       const go = () => {
         const p = el.play();
-        if (p && p.catch) p.catch(() => {});
+        if (p && p.catch) {
+          p.catch(() => {
+            if (typeof onFail === "function") onFail();
+          });
+        }
       };
       if (el.readyState >= 2) go();
       else el.addEventListener("canplay", go, { once: true });
@@ -137,6 +141,96 @@
     function showStar(el) {
       if (starIntro) starIntro.classList.toggle("is-shown", el === starIntro);
       if (starLoop) starLoop.classList.toggle("is-shown", el === starLoop);
+    }
+
+    // Poster / static-frame fallback when mobile recycles video buffers (g3.2)
+    function clearStarFallback() {
+      if (!starBg) return;
+      starBg.classList.remove("is-fallback");
+      starBg.style.removeProperty("background-image");
+      starBg.style.removeProperty("background-size");
+      starBg.style.removeProperty("background-position");
+    }
+
+    function showStarPosterFallback() {
+      if (!starBg) return;
+      const poster = (starIntro && starIntro.getAttribute("poster")) || "";
+      if (poster) {
+        starBg.style.backgroundImage = `url("${poster}")`;
+        starBg.style.backgroundSize = "cover";
+        starBg.style.backgroundPosition = "center";
+      }
+      starBg.classList.add("is-fallback");
+      // Prefer intro element (keeps poster attr) over blank loop
+      if (starIntro) showStar(starIntro);
+    }
+
+    function reloadAndPlay(el, onFail) {
+      if (!el) {
+        if (typeof onFail === "function") onFail();
+        return;
+      }
+      let settled = false;
+      const fail = () => {
+        if (settled) return;
+        settled = true;
+        if (typeof onFail === "function") onFail();
+      };
+      const ok = () => {
+        if (settled) return;
+        settled = true;
+        clearStarFallback();
+      };
+      const attempt = () => {
+        const p = el.play();
+        if (p && p.then) {
+          p.then(ok).catch(fail);
+        } else {
+          ok();
+        }
+      };
+      try { el.load(); } catch (_) {}
+      el.addEventListener("canplay", attempt, { once: true });
+      el.addEventListener("error", fail, { once: true });
+      setTimeout(() => {
+        if (settled) return;
+        if (el.readyState >= 2) attempt();
+        else fail();
+      }, 700);
+    }
+
+    // Resume loop/intro after background without replaying signature intro (g3.1 / g3.3)
+    function resumeStarfield() {
+      if (document.hidden || !starBg) return;
+      const wantOn = introDone && (progress > 0.88 || (starPlayed && progress > 0.55));
+      if (!wantOn) return;
+
+      starBg.classList.add("is-on");
+
+      if (reduceMotion) {
+        showStarPosterFallback();
+        return;
+      }
+
+      if (starLooping && starLoop) {
+        showStar(starLoop);
+        if (starLoop.readyState < 2 || starLoop.networkState === 3) {
+          reloadAndPlay(starLoop, showStarPosterFallback);
+        } else if (starLoop.paused) {
+          playVid(starLoop, () => reloadAndPlay(starLoop, showStarPosterFallback));
+        } else {
+          clearStarFallback();
+        }
+        return;
+      }
+
+      if (!starPlayed && starIntro) {
+        if (starIntro.readyState < 2) loadStarSrc();
+        showStar(starIntro);
+        if (starIntro.paused) {
+          playVid(starIntro, showStarPosterFallback);
+        }
+      }
     }
 
     function resetStarBg() {
@@ -166,6 +260,7 @@
       loadStarSrc();
       const startLoop = () => {
         try { starLoop.currentTime = 0; } catch (_) {}
+        clearStarFallback();
         showStar(starLoop);
         playVid(starLoop);
         dropStarIntro();
@@ -184,18 +279,22 @@
       if (reduceMotion || !active) {
         try { starIntro.pause(); } catch (_) {}
         try { if (starLoop) starLoop.pause(); } catch (_) {}
+        if (!active) clearStarFallback();
+        else if (reduceMotion) showStarPosterFallback();
         return;
       }
 
       if (on && !starPlayed && !starArmed) {
         starArmed = true;
         starLooping = false;
+        clearStarFallback();
         showStar(starIntro);
         playVid(starIntro);
       } else if (on && !starPlayed && starArmed && starIntro && starIntro.paused) {
         playVid(starIntro);
       } else if (on && starLooping && starLoop && starLoop.paused) {
-        playVid(starLoop);
+        if (starLoop.readyState < 2) reloadAndPlay(starLoop, showStarPosterFallback);
+        else playVid(starLoop, () => reloadAndPlay(starLoop, showStarPosterFallback));
       }
     }
 
@@ -681,7 +780,7 @@
       };
     })();
 
-    // Tab hidden → freeze all continuous work
+    // Tab hidden → freeze all continuous work; foreground → revive star loop (g3)
     document.addEventListener("visibilitychange", () => {
       fxSuspended = document.hidden;
       if (fxSuspended) {
@@ -699,8 +798,23 @@
           cicdVideo.resume();
         }
         setStarBg(introDone && progress > 0.88);
+        resumeStarfield();
       }
     });
+
+    // iOS / bfcache path — resume star without replaying signature timeline (g3.1 / g3.3)
+    window.addEventListener("pageshow", () => {
+      if (document.hidden) return;
+      setStarBg(introDone && progress > 0.88);
+      resumeStarfield();
+    });
+
+    if ("onresume" in document) {
+      document.addEventListener("resume", () => {
+        setStarBg(introDone && progress > 0.88);
+        resumeStarfield();
+      });
+    }
 
     /* ============================================================
        Intro: sign, hand the signature to the desk, then release

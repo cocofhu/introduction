@@ -3300,6 +3300,16 @@
 
     .star-bg.is-on { opacity: 1; }
 
+    /* Static poster when loop decode fails after foreground resume (g3.2) */
+    .star-bg.is-fallback {
+      background-color: #050506;
+      background-repeat: no-repeat;
+    }
+
+    .star-bg.is-fallback video.is-shown {
+      opacity: 0.35;
+    }
+
     .star-bg video {
       position: absolute;
       inset: -6%;

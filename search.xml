@@ -5,8 +5,8 @@
     
     <entry>
       <title>Hello Open Pages</title>
-      <link href="/introduction/2026/09/02/hello-open-pages/"/>
-      <url>/introduction/2026/09/02/hello-open-pages/</url>
+      <link href="/2026/09/02/hello-open-pages/"/>
+      <url>/2026/09/02/hello-open-pages/</url>
       
         <content type="html"><![CDATA[<p>在这里用 <strong>Typora 式</strong> 所见即所得写 Markdown。</p><ul><li>左侧管理文章、草稿和页面</li><li>顶部可切换源码 / Hexo 预览</li><li>登录 GitHub 后一键发布到 GitHub Pages</li></ul><h2 id="写作"><a href="#写作" class="headerlink" title="写作"></a>写作</h2><p>支持标题、列表、引用、代码和图片。</p><blockquote><p>预览来自真实的 <code>hexo generate</code>，不是前端 Markdown 渲染。</p></blockquote><div class="mermaid">graph TD    A[开始] --&gt; B{条件判断}    B --&gt;|Yes| C[执行操作A]    B --&gt;|No| D[执行操作B]    C --&gt; E[结束]    D --&gt; E</div>]]></content>
       
