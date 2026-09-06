@@ -1,11 +1,11 @@
-# Open Pages
+# cocofhu的博客
 
-A Typora-like editor that publishes with Hexo to GitHub Pages.
+cocofhu的博客
 
-- **站点**：https://cocofhu.github.io/just-test/
-- **仓库**：https://github.com/cocofhu/just-test
+- **站点**：https://cocofhu.github.io/introduction/
+- **仓库**：https://github.com/cocofhu/introduction
 - **源码分支**：`main` · **站点分支**：`gh-pages`
-- **主题**：landscape
+- **主题**：cocofhu
 
 ---
 

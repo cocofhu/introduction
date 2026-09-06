@@ -1,0 +1,126 @@
+# Open Pages · cocofhu
+links:
+  github: "https://github.com/cocofhu"
+  rss: atom.xml
+  email: "cocofhu@outlook.com"
+work:
+  title: 正在进行
+  items:
+    - date: "2026 · PRODUCT"
+      title: "SkillHub 研发负责人"
+      url: "https://skillhub.cn/"
+      link: "打开 skillhub.cn"
+      excerpt: "面向中国用户的 AI Skills 社区——帮 Agent 搜索、安装、调用Skill。"
+      hovers:
+        - match: "Skills 社区"
+          tip: 可以来试试，DSH插件我们也支持了，目前在持续优化
+        - match: 中国
+          tip: 我们做了对中国用户的优化：包括翻译、镜像加速、安全扫描等，我们也在尝试新的功能：AgentPay，Skill比赛等
+        - match: 调用
+          tip: 我们最近在支持云技能
+    - date: "2026 · AI HARNESS"
+      title: "AI Harness 提效"
+      url: "https://github.com/cocofhu/approving"
+      link: "打开 Approving"
+      excerpt: "我在并行做很多项目和尝试一些新的东西，最大的问题在于：准确表达需求，以及理解 Agent 输出。\n\n目前主要在探索如何在 10 秒内读懂 AI 生成的内容——Demo、流程图等图形化表达；最近也在想用 AI 会议来对齐需求。\n\n开源实践见 Approving。"
+      hovers:
+        - match: 表达需求
+          tip: 对对对就是这样，太对了
+        - match: "理解 Agent 输出"
+          tip: 这么多字我也看不懂啊，给我用，最直白，最直接，最不绕弯子......
+        - match: Demo
+          tip: 前端到底改了什么，交互是什么样的
+        - match: 流程图
+          tip: 快速理解后端流程
+        - match: Approving
+          tip: "还没来得及整理，因为最开始这个工作流完成之后什么也不管，每天就同意审批，所以就取名叫了approving, 嘿嘿，还是要认真确认啊"
+        - match: 很多项目
+          tip: "我是一个NAS玩家，我有全套的AIO服务器， 有自己的基建：CI/CD、Repo、工具链等，如果有兴趣可以和我交流"
+        - match: "10 秒内"
+          tip: 多个项目并行切换的时候我要快速理解和决策，这是最大的瓶颈，AI暂时不能取代我的创作力
+        - match: "AI 会议"
+          tip: "Agent直接拉我开会， 目前已经有一些进展了，敬请期待"
+    - date: "2026 · CREATION"
+      title: 表达输出
+      url: "https://github.com/cocofhu"
+      link: "去 GitHub 看看"
+      excerpt: "想去学习一些运营方法，让自己的产品被更多人用起来。\n\n目前计划把我做的小工具在 GitHub 上推广一下，也在社交媒体上做一些输出。"
+      hovers:
+        - match: 运营方法
+          tip: 像通过自己的办法获得一些用户
+        - match: 产品
+          tip: 例如这个主页，是不是很酷
+        - match: GitHub
+          tip: 还没有整理，最近会抽时间整理下
+        - match: 小工具
+          tip: 从2024年到现在，我已经有104个小项目了，想知道我做了些什么吗
+        - match: 学习
+          tip: 我最近在学计算机图形学
+        - match: 计划
+          tip: 大部分情况下我没有计划
+recent:
+  title: 最近在做
+  lede: 看看我在做什么
+  index_label: "01 NOTES"
+  items:
+    - date: "2026 "
+      title: 学习计算机图形学
+      tag: Visual
+      url: ""
+      excerpt: 了解一些图形学相关的知识，学习一些基础知识，让AI帮我3D建模。
+      hovers:
+        - match: 图形学
+          tip: 在学习GAMES101-现代计算机图形学入门-闫令琪
+        - match: 3D建模
+          tip: GPT-6在2D绘画上好像非常厉害，真的假的？
+        - match: 基础知识
+          tip: 我无法描述我的需求，看懂建模软件上的菜单那
+    - date: "2026 "
+      title: 设计一个博客主页
+      tag: Blog
+      url: "https://cocofhu.com"
+      excerpt: 就是这个啦，酷吧，零成本完全部署在Github上，我在做了一个客户端，可以在客户端上直接修改。
+      hovers:
+        - match: 酷吧
+          tip: 花了很多时间的，中间的特效了用了很多视觉模型能力
+        - match: Github
+          tip: 准确来说是GitHubPages
+        - match: 客户端
+          tip: "Mac Windows都支持，不过体积稍微有点大，看看怎么优化下"
+    - date: 2026
+      title: 牛马机器人
+      tag: Agent
+      url: ""
+      excerpt: "目前Open Claw、Hermes等类似Agent在执行指令的过程中没有任何服务意识，做完了才有反馈，我无法知道进度。我想让他先收到然后派子Agent去实现，我在中途可以打断修改任务，多任务并行。"
+      hovers:
+        - match: 类似Agent
+          tip: 不好用，交互体验很糟糕，多任务上下文会混乱
+        - match: 反馈
+          tip: 应该像人类一样，收到！
+        - match: 知道进度
+          tip: 你手头上有哪些事情，进度怎么样了，xxxx不做了停一下，xxxx改一下
+        - match: 任务并行
+          tip: "Hi, Jarvis！"
+        - match: 收到
+          tip: GPTLive做得还不错
+    - date: 2026
+      title: 追番，打游戏
+      tag: Game
+      url: ""
+      excerpt: 最近刚刚给异度之刃2重制版打通关了，现在在等异度之刃3重制版。目前也在看一些动漫。
+      hovers:
+        - match: 异度之刃2
+          tip: 我是糕手！
+        - match: 异度之刃3
+          tip: 游戏首发买了没玩进去，这次一定通关
+        - match: 动漫
+          tip: "无职转生、恶女不才 请多关照"
+    - date: 2026
+      title: 作为人类写点什么
+      tag: NOTE
+      url: ""
+      excerpt: 写点什么，在各大博客网站投稿下。
+      hovers:
+        - match: 写点什么
+          tip: 我在读书的那个时候还写博客的，好久没写了
+writing_limit: 0

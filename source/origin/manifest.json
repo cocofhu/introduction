@@ -2,5 +2,14 @@
   "schema": "open-pages.site/v1",
   "siteId": "default",
   "tool": "open-pages",
-  "updatedAt": "2026-09-03T10:35:23.222Z"
+  "updatedAt": "2026-09-06T21:20:17.524Z",
+  "theme": "cocofhu",
+  "addons": [
+    {
+      "kind": "theme",
+      "source": "cocofhu/cocofhu-theme",
+      "id": "cocofhu",
+      "enabled": true
+    }
+  ]
 }
