@@ -1,6 +1,6 @@
 # cocofhu的博客
 
-A Typora-like editor that publishes with Hexo to GitHub Pages.
+cocofhu的博客
 
 - **站点**：https://cocofhu.github.io/introduction/
 - **仓库**：https://github.com/cocofhu/introduction
