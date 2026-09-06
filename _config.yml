@@ -7,8 +7,8 @@ author: ""
 avatar: ""
 language: zh-CN
 timezone: Asia/Shanghai
-url: "https://cocofhu.github.io/introduction"
-root: /introduction/
+url: "https://cocofhu.com"
+root: /
 permalink: ":year/:month/:day/:title/"
 permalink_defaults:
 pretty_urls:
