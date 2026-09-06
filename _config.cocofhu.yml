@@ -87,7 +87,7 @@ recent:
           tip: 准确来说是GitHubPages
         - match: 客户端
           tip: "Mac Windows都支持，不过体积稍微有点大，看看怎么优化下"
-    - date: ""
+    - date: "2026 "
       title: 牛马机器人
       tag: Agent
       url: ""
@@ -103,7 +103,7 @@ recent:
           tip: "Hi, Jarvis！"
         - match: 收到
           tip: GPTLive做得还不错
-    - date: ""
+    - date: "2026 "
       title: 追番，打游戏
       tag: Game
       url: ""
@@ -115,7 +115,7 @@ recent:
           tip: 游戏首发买了没玩进去，这次一定通关
         - match: 动漫
           tip: "无职转生、恶女不才 请多关照"
-    - date: ""
+    - date: "2026 "
       title: 作为人类写点什么
       tag: NOTE
       url: ""
