@@ -2,7 +2,7 @@
 
 cocofhu的博客
 
-- **站点**：https://cocofhu.github.io/introduction/
+- **站点**：https://cocofhu.com/
 - **仓库**：https://github.com/cocofhu/introduction
 - **源码分支**：`main` · **站点分支**：`gh-pages`
 - **主题**：cocofhu
