@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Open Pages</title>
+  
+  <subtitle>Write, preview, publish</subtitle>
+  <link href="https://cocofhu.github.io/introduction/atom.xml" rel="self"/>
+  
+  <link href="https://cocofhu.github.io/introduction/"/>
+  <updated>2026-09-06T20:56:39.084Z</updated>
+  <id>https://cocofhu.github.io/introduction/</id>
+  
+  <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Hello Open Pages</title>
+    <link href="https://cocofhu.github.io/introduction/2026/09/02/hello-open-pages/"/>
+    <id>https://cocofhu.github.io/introduction/2026/09/02/hello-open-pages/</id>
+    <published>2026-09-02T03:25:40.000Z</published>
+    <updated>2026-09-06T20:56:39.084Z</updated>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;在这里用 &lt;strong&gt;Typora 式&lt;/strong&gt; 所见即所得写 Markdown。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;左侧管理文章、草稿和页面&lt;/li&gt;
+&lt;li&gt;顶部可切换源码 / Hexo 预览&lt;/li&gt;
+&lt;li&gt;登录 GitHub 后一键发布到 GitHub Pag</summary>
+      
+    
+    
+    
+    <category term="Welcome" scheme="https://cocofhu.github.io/introduction/categories/Welcome/"/>
+    
+    
+    <category term="open-pages" scheme="https://cocofhu.github.io/introduction/tags/open-pages/"/>
+    
+  </entry>
+  
+</feed>

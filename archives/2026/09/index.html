@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><style id="op-preview-chrome">
+html { scrollbar-width: thin; scrollbar-color: rgba(28, 25, 21, 0.35) transparent; }
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: rgba(28, 25, 21, 0.28);
+  border: 2px solid transparent;
+  border-radius: 999px;
+  background-clip: padding-box;
+}
+::-webkit-scrollbar-button { display: none; width: 0; height: 0; }
+</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Open Pages</title>
+  <link rel="icon" type="image/png" href="/introduction/assets/favicon.png" sizes="512x512" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/introduction/assets/favicon-32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/introduction/assets/favicon-16.png" />
+  <link rel="icon" href="/introduction/favicon.ico" sizes="any" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/introduction/assets/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,500;1,600&family=IBM+Plex+Sans+SC:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Silkscreen:wght@400;700&display=swap" rel="stylesheet" />
+  
+  <link rel="stylesheet" href="/introduction/css/article.css" />
+  
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/introduction/atom.xml" title="Open Pages" type="application/atom+xml">
+</head>
+<body class="is-article">
+  
+  <!-- Lucide icons (https://lucide.dev), MIT. Stroke inherited via currentColor. -->
+  <svg class="defs" aria-hidden="true" focusable="false">
+    <defs>
+      <symbol id="i-monitor" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></symbol>
+      <symbol id="i-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></symbol>
+      <symbol id="i-terminal" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"/><line x1="12" x2="20" y1="19" y2="19"/></symbol>
+      <symbol id="i-server" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="8" x="2" y="2" rx="2"/><rect width="20" height="8" x="2" y="14" rx="2"/><line x1="6" x2="6.01" y1="6" y2="6"/><line x1="6" x2="6.01" y1="18" y2="18"/></symbol>
+      <symbol id="i-layers" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/></symbol>
+      <symbol id="i-book" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></symbol>
+      <symbol id="i-github" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-6.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 4.5 3 6.5 6 6.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></symbol>
+      <symbol id="i-arrow-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></symbol>
+      <symbol id="i-arrow-up-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></symbol>
+      <symbol id="i-git-branch" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" x2="6" y1="3" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></symbol>
+      <symbol id="i-git-commit" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><line x1="3" x2="9" y1="12" y2="12"/><line x1="15" x2="21" y1="12" y2="12"/></symbol>
+      <symbol id="i-box" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></symbol>
+      <symbol id="i-flask" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2v7.53a2 2 0 0 1-.21.9L4.72 20.55a1 1 0 0 0 .9 1.45h12.76a1 1 0 0 0 .9-1.45l-5.07-10.12A2 2 0 0 1 14 9.53V2"/><path d="M8.5 2h7"/><path d="M7 16h10"/></symbol>
+      <symbol id="i-rocket" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></symbol>
+      <symbol id="i-chevron-down" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></symbol>
+      <symbol id="i-layout" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></symbol>
+      <symbol id="i-activity" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"/></symbol>
+      <symbol id="i-pen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.376 3.622a1 1 0 0 1 3.002 3.002L7.368 18.635a2 2 0 0 1-.855.506l-2.872.838a.5.5 0 0 1-.62-.62l.838-2.872a2 2 0 0 1 .506-.854z"/></symbol>
+      <symbol id="i-rss" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11a9 9 0 0 1 9 9"/><path d="M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1"/></symbol>
+      <symbol id="i-mail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.99 5.73a2 2 0 0 1-2.02 0L2 7"/></symbol>
+      <symbol id="i-rotate" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></symbol>
+      <symbol id="i-calendar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></symbol>
+    </defs>
+  </svg>
+
+  <!-- ============ intro ============ -->
+  <div class="curtain" id="curtain" aria-hidden="true"></div>
+
+  <div class="sig-fly" id="sigFly" aria-hidden="true">
+    <svg viewBox="50 294 946 430" preserveAspectRatio="xMidYMid meet">
+      <defs>
+      
+
+      <filter id="nib-glow" x="-25%" y="-25%" width="150%" height="150%">
+        <feGaussianBlur stdDeviation="6" />
+      </filter>
+
+      <!-- The pen edge, leaning with the italic slant -->
+      <linearGradient id="wipe-grad" gradientUnits="userSpaceOnUse" x1="-80" y1="-24" x2="80" y2="24">
+        <stop offset="0" stop-color="#fff" />
+        <stop offset="1" stop-color="#000" />
+      </linearGradient>
+
+      <!-- A bump just behind the edge: wet ink at the nib -->
+      <linearGradient id="nib-grad" gradientUnits="userSpaceOnUse" x1="-140" y1="-42" x2="140" y2="42">
+        <stop offset="0"    stop-color="#000" />
+        <stop offset="0.11" stop-color="#000" />
+        <stop offset="0.43" stop-color="#fff" />
+        <stop offset="0.56" stop-color="#000" />
+        <stop offset="1"    stop-color="#000" />
+      </linearGradient>
+
+      <mask id="write-mask" maskUnits="userSpaceOnUse" x="-200" y="240" width="1500" height="540">
+        <g id="wipe">
+          <rect x="-1400" y="240" width="1320" height="540" fill="#fff" />
+          <rect x="-80" y="240" width="160" height="540" fill="url(#wipe-grad)" />
+        </g>
+      </mask>
+
+      <mask id="nib-mask" maskUnits="userSpaceOnUse" x="-200" y="240" width="1500" height="540">
+        <g id="wipe-nib">
+          <rect x="-140" y="240" width="280" height="540" fill="url(#nib-grad)" />
+        </g>
+      </mask>
+    </defs>
+      <path class="sig-ink" id="sigFlyInk" mask="url(#write-mask)" fill-rule="evenodd" d="M 681.3 319.1 C 672.4 325, 649.5 347.9, 639.8 360.5 C 625.8 378.8, 605 409.3, 605 411.5 C 605 411.7, 603.6 414.3, 601.9 417.2 C 598 423.8, 586.1 447.6, 583 455 C 581.7 458, 580.6 460.6, 580.5 460.8 C 580.4 460.9, 576.7 461.7, 572.4 462.5 C 560.4 464.7, 550.3 466.9, 542 469.1 C 528.3 472.9, 500.6 481.2, 493.6 483.6 C 486.7 486.1, 486.7 486.1, 484.1 483.6 C 481.2 480.9, 472.9 477, 469.9 477 C 466.1 477, 458.1 482, 453.3 487.5 C 442.6 499.8, 414.4 520.1, 391.6 532 C 365.5 545.7, 348.4 549.3, 346.4 541.5 C 345 535.7, 351.9 521.5, 361.1 511.6 C 364.9 507.4, 379.6 497.3, 380.5 498.2 C 380.8 498.4, 380.4 500, 379.8 501.7 C 378.8 504.3, 378.9 505.2, 380.3 507.4 C 383.5 512.3, 387.8 510.3, 392 502 C 395.4 495.4, 395.8 491.5, 393.4 488.2 C 391.7 485.7, 387 483, 384.5 483 C 383.6 483, 375.6 486.6, 366.7 491 C 357.8 495.3, 346.7 500.3, 342.1 502 C 330.9 506.1, 311.2 511.3, 309.4 510.6 C 308.6 510.3, 308 508.9, 308 507.5 C 308 504.7, 304.1 500.4, 300.2 498.9 C 298.9 498.4, 293.1 498, 287.3 498 C 276.9 498, 276.7 498, 272.1 501.4 C 269.6 503.3, 266.1 506.3, 264.5 508 C 253.5 519.7, 189.6 558.1, 154 574.5 C 125.9 587.4, 100.2 594, 94.5 589.7 C 85.5 582.8, 109.2 549.6, 144 520.3 C 156.3 509.9, 177.4 496, 180.8 496 C 181.2 496, 182.1 497.5, 182.8 499.3 C 185.3 506.3, 191.2 506.3, 194.5 499.3 C 198.7 490.4, 194.2 483.1, 183.4 481.5 C 180 481, 178.2 481.6, 169.5 486.5 C 161 491.2, 152.1 497.2, 146 502.3 C 145.2 502.9, 141.1 506.3, 137 509.6 C 132.9 513, 122.8 522.7, 114.5 531.1 C 80 566.6, 70.7 591.3, 88 601.4 C 91 603.2, 93.1 603.5, 102 603.4 C 117.5 603.3, 131.6 599.1, 154.8 587.8 C 179.1 576, 219.9 552.7, 243.8 536.9 C 247.7 534.3, 251 532.5, 251 532.9 C 251 533.4, 250.3 535.7, 249.4 538.1 C 247 544.5, 247 557.7, 249.3 561.2 C 253.7 567.6, 264.5 569, 273.9 564.3 C 285.1 558.6, 299.1 541.7, 304.1 527.6 C 306.4 521.3, 306.4 521.3, 313.1 520.6 C 316.9 520.3, 325.1 518.4, 331.4 516.5 C 344.7 512.5, 345.9 512.3, 343.8 514.8 C 342.9 515.7, 340.7 519.4, 338.9 523 C 330.8 539.1, 332.2 550.1, 343.1 555.8 C 353.2 561.2, 374.1 556, 399.4 541.8 C 411.1 535.3, 429.9 523.2, 433.7 519.7 C 436.9 516.8, 437.5 518.1, 435.6 523.6 C 432.4 533, 434.6 542.5, 441.1 547.1 C 443.9 549.1, 445.7 549.5, 451.7 549.5 C 461.4 549.5, 467.8 546.1, 478.5 535.5 C 492 521.9, 498.6 506, 494.1 497.7 C 493.3 496.2, 492.9 494.8, 493.1 494.6 C 496.5 491.6, 574 472.2, 574 474.3 C 574 474.5, 569.9 484.6, 564.9 496.6 C 559.9 508.6, 554.4 522.3, 552.5 527 C 549.5 534.6, 545.4 544.4, 536.3 565.5 C 534.9 568.8, 532.2 574.8, 530.4 578.8 C 528.5 582.9, 527 586.3, 527 586.5 C 527 586.7, 525.1 590.8, 522.9 595.7 C 520.6 600.5, 517.3 607.9, 515.5 612 C 505.8 634.4, 500 648.4, 497.1 656 C 495.3 660.7, 493.3 666.1, 492.5 668 C 491.8 669.9, 490.7 673.5, 490 676 C 489.3 678.5, 488.4 681.6, 487.8 682.9 C 487.3 684.2, 486.6 688.1, 486.3 691.6 C 485.7 697.6, 485.9 698, 488.8 700.9 C 490.5 702.6, 492.6 704, 493.4 704 C 497.7 704, 504 692.6, 509 675.5 C 511.8 665.9, 519.2 647.5, 542 593.5 C 547.1 581.4, 552.6 568.1, 554.2 564 C 555.9 559.9, 558.7 552.9, 560.5 548.5 C 562.3 544.1, 566.1 534.4, 569 527 C 571.8 519.6, 574.8 512.1, 575.5 510.5 C 576.6 508.1, 585.5 486, 590.3 473.9 C 591.2 471.5, 592 471.3, 601.3 470.1 C 611.4 468.8, 647.9 462.9, 669.3 459 C 675.8 457.8, 681.3 457, 681.6 457.2 C 681.8 457.5, 679.4 463.3, 676.2 470.1 C 673 476.9, 668.6 486.6, 666.5 491.5 C 664.4 496.4, 661.3 502, 659.6 503.8 C 650.5 513.7, 621.1 533.2, 609.9 536.9 C 607.9 537.5, 605.4 539, 604.5 540 C 602.8 541.9, 602.8 542.1, 604.6 544.1 C 606.1 545.7, 607.3 546.1, 610.2 545.7 C 616.9 544.8, 642.2 531.7, 648.7 525.7 C 652.4 522.4, 652.4 524.3, 648.7 533.7 C 642.3 550.1, 639.7 562.7, 641.9 566.8 C 643.1 569, 649.8 573, 652.3 573 C 655.5 573, 659.9 569.7, 663.4 564.8 C 686.4 532.3, 700.8 514, 703.1 514 C 703.6 514, 704 515.9, 704 518.3 C 704 525, 705.9 534.9, 708 539 C 714.6 552, 730.8 553.4, 747.3 542.4 C 752.1 539.2, 763.9 529.3, 765.7 527 C 767.5 524.7, 768.1 526.3, 766.9 529.9 C 765.3 534.5, 766.3 543.5, 768.7 546.8 C 773.2 552.9, 782.9 554.3, 791.2 550.1 C 795.8 547.8, 810.8 534.7, 818.8 526.1 C 823.3 521.3, 824.4 520.9, 822.9 524.8 C 821.2 528.9, 821.3 540, 823 543.5 C 825.1 547.5, 830 550.7, 836.8 552.1 C 847.4 554.3, 869.7 549.4, 892.5 539.8 C 907.2 533.7, 936.1 519.5, 953 510.3 C 959.9 506.5, 967.6 502.4, 970.3 501.1 C 975.1 498.8, 976.3 496.4, 973.3 495.3 C 969.7 493.9, 960.5 497.3, 937 508.5 C 891.8 530, 870.6 538.3, 852 541.5 C 839 543.8, 833 542, 833 536 C 833 531.5, 836.6 518.9, 840.4 510.3 C 845.4 499, 845 495.7, 838.2 494.4 C 835.1 493.8, 834.4 494.3, 818.2 510.5 C 795.3 533.5, 783.4 543.1, 779.5 541.6 C 775.3 540, 779.9 523.1, 788.5 509 C 793.2 501.3, 793.7 498.7, 791 496 C 787.1 492.1, 784.3 493.7, 769.3 508.7 C 748.9 529.1, 734.7 539, 726.1 539 C 718.8 539, 716.8 533.7, 716.6 514 C 716.5 501.8, 715.1 498.7, 709.1 496.9 C 703.9 495.4, 701.4 496.9, 691.3 507.2 C 681.4 517.3, 674.5 525.6, 665.6 537.8 C 661.8 542.9, 658.6 546.9, 658.3 546.7 C 658.1 546.4, 660.2 540.7, 663 533.9 C 665.8 527.1, 668.9 519.7, 669.7 517.5 C 673.4 508.4, 681.2 494.3, 684.3 491 C 694.9 479.8, 721.3 447.3, 734.1 429.8 C 751.5 405.9, 770 374.8, 770 369.4 C 769.9 363.7, 766 360, 760 360 C 748.5 360, 716.5 396.5, 695.5 433.8 C 692.4 439.4, 689 444.5, 688 445 C 685.7 446.2, 662.9 449.6, 614.5 456 C 596.8 458.3, 598 458.3, 598 457 C 598 455.2, 603.1 444, 610.7 429.3 C 623.2 404.8, 643.9 374.2, 659.5 357 C 670.2 345.3, 686.3 331, 687.5 332.2 C 687.7 332.4, 685 337.7, 681.5 344 C 677.9 350.3, 675 356.3, 675 357.2 C 675 362.5, 680.2 366.6, 683.9 364.3 C 686.8 362.5, 703 330.8, 703 326.9 C 703 323.1, 699.9 318.9, 695.7 316.9 C 689.7 314.2, 688.1 314.5, 681.3 319.1 M 752.4 381.1 C 742.9 390.2, 723.3 416.2, 713.1 433.4 C 709 440.4, 708 442.8, 708.5 445 C 709 447.5, 708.6 448.2, 704.7 450.9 C 701.6 453, 699.1 456, 696.6 460.6 C 694.5 464.3, 693.1 467.4, 693.2 467.6 C 694.2 468.5, 726.7 427, 737.9 410.5 C 747.9 395.8, 759.3 377, 758.6 376.3 C 758.3 376, 755.6 378.2, 752.4 381.1 M 459.7 502.5 C 454.5 509.5, 447.7 523.3, 446.6 528.8 C 445.8 533.1, 446.7 536.7, 448.8 537.5 C 451.1 538.4, 460.2 533.5, 466 528.3 C 470.3 524.4, 480 510.2, 480 507.8 C 480 507.4, 478 506.2, 475.6 505.2 C 473.2 504.1, 470 501.6, 468.4 499.6 C 466.8 497.6, 465.3 496, 465 496 C 464.7 496, 462.3 498.9, 459.7 502.5 M 277.3 514.3 C 267.8 524.3, 258.1 544.5, 259.2 552.1 C 260.4 561.1, 279.8 546.1, 288.9 529 C 290.6 525.8, 292 522.8, 292 522.2 C 292 521.7, 290.3 520.3, 288.3 519.3 C 286.1 518.2, 283.9 516, 283 514.2 C 281.1 510.3, 281.1 510.3, 277.3 514.3" />
+      <path class="sig-nib" id="sigFlyNib" mask="url(#nib-mask)" fill-rule="evenodd" d="M 681.3 319.1 C 672.4 325, 649.5 347.9, 639.8 360.5 C 625.8 378.8, 605 409.3, 605 411.5 C 605 411.7, 603.6 414.3, 601.9 417.2 C 598 423.8, 586.1 447.6, 583 455 C 581.7 458, 580.6 460.6, 580.5 460.8 C 580.4 460.9, 576.7 461.7, 572.4 462.5 C 560.4 464.7, 550.3 466.9, 542 469.1 C 528.3 472.9, 500.6 481.2, 493.6 483.6 C 486.7 486.1, 486.7 486.1, 484.1 483.6 C 481.2 480.9, 472.9 477, 469.9 477 C 466.1 477, 458.1 482, 453.3 487.5 C 442.6 499.8, 414.4 520.1, 391.6 532 C 365.5 545.7, 348.4 549.3, 346.4 541.5 C 345 535.7, 351.9 521.5, 361.1 511.6 C 364.9 507.4, 379.6 497.3, 380.5 498.2 C 380.8 498.4, 380.4 500, 379.8 501.7 C 378.8 504.3, 378.9 505.2, 380.3 507.4 C 383.5 512.3, 387.8 510.3, 392 502 C 395.4 495.4, 395.8 491.5, 393.4 488.2 C 391.7 485.7, 387 483, 384.5 483 C 383.6 483, 375.6 486.6, 366.7 491 C 357.8 495.3, 346.7 500.3, 342.1 502 C 330.9 506.1, 311.2 511.3, 309.4 510.6 C 308.6 510.3, 308 508.9, 308 507.5 C 308 504.7, 304.1 500.4, 300.2 498.9 C 298.9 498.4, 293.1 498, 287.3 498 C 276.9 498, 276.7 498, 272.1 501.4 C 269.6 503.3, 266.1 506.3, 264.5 508 C 253.5 519.7, 189.6 558.1, 154 574.5 C 125.9 587.4, 100.2 594, 94.5 589.7 C 85.5 582.8, 109.2 549.6, 144 520.3 C 156.3 509.9, 177.4 496, 180.8 496 C 181.2 496, 182.1 497.5, 182.8 499.3 C 185.3 506.3, 191.2 506.3, 194.5 499.3 C 198.7 490.4, 194.2 483.1, 183.4 481.5 C 180 481, 178.2 481.6, 169.5 486.5 C 161 491.2, 152.1 497.2, 146 502.3 C 145.2 502.9, 141.1 506.3, 137 509.6 C 132.9 513, 122.8 522.7, 114.5 531.1 C 80 566.6, 70.7 591.3, 88 601.4 C 91 603.2, 93.1 603.5, 102 603.4 C 117.5 603.3, 131.6 599.1, 154.8 587.8 C 179.1 576, 219.9 552.7, 243.8 536.9 C 247.7 534.3, 251 532.5, 251 532.9 C 251 533.4, 250.3 535.7, 249.4 538.1 C 247 544.5, 247 557.7, 249.3 561.2 C 253.7 567.6, 264.5 569, 273.9 564.3 C 285.1 558.6, 299.1 541.7, 304.1 527.6 C 306.4 521.3, 306.4 521.3, 313.1 520.6 C 316.9 520.3, 325.1 518.4, 331.4 516.5 C 344.7 512.5, 345.9 512.3, 343.8 514.8 C 342.9 515.7, 340.7 519.4, 338.9 523 C 330.8 539.1, 332.2 550.1, 343.1 555.8 C 353.2 561.2, 374.1 556, 399.4 541.8 C 411.1 535.3, 429.9 523.2, 433.7 519.7 C 436.9 516.8, 437.5 518.1, 435.6 523.6 C 432.4 533, 434.6 542.5, 441.1 547.1 C 443.9 549.1, 445.7 549.5, 451.7 549.5 C 461.4 549.5, 467.8 546.1, 478.5 535.5 C 492 521.9, 498.6 506, 494.1 497.7 C 493.3 496.2, 492.9 494.8, 493.1 494.6 C 496.5 491.6, 574 472.2, 574 474.3 C 574 474.5, 569.9 484.6, 564.9 496.6 C 559.9 508.6, 554.4 522.3, 552.5 527 C 549.5 534.6, 545.4 544.4, 536.3 565.5 C 534.9 568.8, 532.2 574.8, 530.4 578.8 C 528.5 582.9, 527 586.3, 527 586.5 C 527 586.7, 525.1 590.8, 522.9 595.7 C 520.6 600.5, 517.3 607.9, 515.5 612 C 505.8 634.4, 500 648.4, 497.1 656 C 495.3 660.7, 493.3 666.1, 492.5 668 C 491.8 669.9, 490.7 673.5, 490 676 C 489.3 678.5, 488.4 681.6, 487.8 682.9 C 487.3 684.2, 486.6 688.1, 486.3 691.6 C 485.7 697.6, 485.9 698, 488.8 700.9 C 490.5 702.6, 492.6 704, 493.4 704 C 497.7 704, 504 692.6, 509 675.5 C 511.8 665.9, 519.2 647.5, 542 593.5 C 547.1 581.4, 552.6 568.1, 554.2 564 C 555.9 559.9, 558.7 552.9, 560.5 548.5 C 562.3 544.1, 566.1 534.4, 569 527 C 571.8 519.6, 574.8 512.1, 575.5 510.5 C 576.6 508.1, 585.5 486, 590.3 473.9 C 591.2 471.5, 592 471.3, 601.3 470.1 C 611.4 468.8, 647.9 462.9, 669.3 459 C 675.8 457.8, 681.3 457, 681.6 457.2 C 681.8 457.5, 679.4 463.3, 676.2 470.1 C 673 476.9, 668.6 486.6, 666.5 491.5 C 664.4 496.4, 661.3 502, 659.6 503.8 C 650.5 513.7, 621.1 533.2, 609.9 536.9 C 607.9 537.5, 605.4 539, 604.5 540 C 602.8 541.9, 602.8 542.1, 604.6 544.1 C 606.1 545.7, 607.3 546.1, 610.2 545.7 C 616.9 544.8, 642.2 531.7, 648.7 525.7 C 652.4 522.4, 652.4 524.3, 648.7 533.7 C 642.3 550.1, 639.7 562.7, 641.9 566.8 C 643.1 569, 649.8 573, 652.3 573 C 655.5 573, 659.9 569.7, 663.4 564.8 C 686.4 532.3, 700.8 514, 703.1 514 C 703.6 514, 704 515.9, 704 518.3 C 704 525, 705.9 534.9, 708 539 C 714.6 552, 730.8 553.4, 747.3 542.4 C 752.1 539.2, 763.9 529.3, 765.7 527 C 767.5 524.7, 768.1 526.3, 766.9 529.9 C 765.3 534.5, 766.3 543.5, 768.7 546.8 C 773.2 552.9, 782.9 554.3, 791.2 550.1 C 795.8 547.8, 810.8 534.7, 818.8 526.1 C 823.3 521.3, 824.4 520.9, 822.9 524.8 C 821.2 528.9, 821.3 540, 823 543.5 C 825.1 547.5, 830 550.7, 836.8 552.1 C 847.4 554.3, 869.7 549.4, 892.5 539.8 C 907.2 533.7, 936.1 519.5, 953 510.3 C 959.9 506.5, 967.6 502.4, 970.3 501.1 C 975.1 498.8, 976.3 496.4, 973.3 495.3 C 969.7 493.9, 960.5 497.3, 937 508.5 C 891.8 530, 870.6 538.3, 852 541.5 C 839 543.8, 833 542, 833 536 C 833 531.5, 836.6 518.9, 840.4 510.3 C 845.4 499, 845 495.7, 838.2 494.4 C 835.1 493.8, 834.4 494.3, 818.2 510.5 C 795.3 533.5, 783.4 543.1, 779.5 541.6 C 775.3 540, 779.9 523.1, 788.5 509 C 793.2 501.3, 793.7 498.7, 791 496 C 787.1 492.1, 784.3 493.7, 769.3 508.7 C 748.9 529.1, 734.7 539, 726.1 539 C 718.8 539, 716.8 533.7, 716.6 514 C 716.5 501.8, 715.1 498.7, 709.1 496.9 C 703.9 495.4, 701.4 496.9, 691.3 507.2 C 681.4 517.3, 674.5 525.6, 665.6 537.8 C 661.8 542.9, 658.6 546.9, 658.3 546.7 C 658.1 546.4, 660.2 540.7, 663 533.9 C 665.8 527.1, 668.9 519.7, 669.7 517.5 C 673.4 508.4, 681.2 494.3, 684.3 491 C 694.9 479.8, 721.3 447.3, 734.1 429.8 C 751.5 405.9, 770 374.8, 770 369.4 C 769.9 363.7, 766 360, 760 360 C 748.5 360, 716.5 396.5, 695.5 433.8 C 692.4 439.4, 689 444.5, 688 445 C 685.7 446.2, 662.9 449.6, 614.5 456 C 596.8 458.3, 598 458.3, 598 457 C 598 455.2, 603.1 444, 610.7 429.3 C 623.2 404.8, 643.9 374.2, 659.5 357 C 670.2 345.3, 686.3 331, 687.5 332.2 C 687.7 332.4, 685 337.7, 681.5 344 C 677.9 350.3, 675 356.3, 675 357.2 C 675 362.5, 680.2 366.6, 683.9 364.3 C 686.8 362.5, 703 330.8, 703 326.9 C 703 323.1, 699.9 318.9, 695.7 316.9 C 689.7 314.2, 688.1 314.5, 681.3 319.1 M 752.4 381.1 C 742.9 390.2, 723.3 416.2, 713.1 433.4 C 709 440.4, 708 442.8, 708.5 445 C 709 447.5, 708.6 448.2, 704.7 450.9 C 701.6 453, 699.1 456, 696.6 460.6 C 694.5 464.3, 693.1 467.4, 693.2 467.6 C 694.2 468.5, 726.7 427, 737.9 410.5 C 747.9 395.8, 759.3 377, 758.6 376.3 C 758.3 376, 755.6 378.2, 752.4 381.1 M 459.7 502.5 C 454.5 509.5, 447.7 523.3, 446.6 528.8 C 445.8 533.1, 446.7 536.7, 448.8 537.5 C 451.1 538.4, 460.2 533.5, 466 528.3 C 470.3 524.4, 480 510.2, 480 507.8 C 480 507.4, 478 506.2, 475.6 505.2 C 473.2 504.1, 470 501.6, 468.4 499.6 C 466.8 497.6, 465.3 496, 465 496 C 464.7 496, 462.3 498.9, 459.7 502.5 M 277.3 514.3 C 267.8 524.3, 258.1 544.5, 259.2 552.1 C 260.4 561.1, 279.8 546.1, 288.9 529 C 290.6 525.8, 292 522.8, 292 522.2 C 292 521.7, 290.3 520.3, 288.3 519.3 C 286.1 518.2, 283.9 516, 283 514.2 C 281.1 510.3, 281.1 510.3, 277.3 514.3" />
+    </svg>
+  </div>
+
+  <button type="button" class="cue" id="cue" aria-label="向下滚动进入屏幕">
+    <span class="cue-rail" aria-hidden="true"></span>
+    <span>SCROLL</span>
+    <svg class="icon" aria-hidden="true"><use href="#i-chevron-down"/></svg>
+  </button>
+
+  <aside class="star-bg" id="starBg" aria-hidden="true">
+    <video
+      id="starIntro"
+      muted
+      playsinline
+      preload="none"
+      poster="/introduction/assets/star-scroll-poster.jpg?v=bake1"
+      src="/introduction/assets/star-handoff.mp4?v=bake2"
+    ></video>
+    <video
+      id="starLoop"
+      muted
+      playsinline
+      loop
+      preload="none"
+      src="/introduction/assets/star-loop.mp4?v=bake2"
+    ></video>
+  </aside>
+
+  <!-- ============ the monitor, driven by scroll ============ -->
+  <div class="rig" id="rig">
+    <div class="pin">
+
+      <div class="env" id="env">
+        <div class="nebula"><canvas id="nebula"></canvas></div>
+        <div class="hue-switch" id="hueSwitch" role="group" aria-label="背景色调">
+          <button type="button" data-theme="indigo" aria-pressed="true" title="Indigo" style="--swatch:#4d6dff"></button>
+          <button type="button" data-theme="violet" aria-pressed="false" title="Violet" style="--swatch:#9b7dff"></button>
+          <button type="button" data-theme="teal" aria-pressed="false" title="Teal" style="--swatch:#3ecfc4"></button>
+          <button type="button" data-theme="rose" aria-pressed="false" title="Rose" style="--swatch:#ff7aa2"></button>
+        </div>
+      </div>
+
+      <div class="frame" id="frame">
+        <div class="chassis" id="chassis">
+          <div class="bezel">
+            <span class="led" aria-hidden="true"></span>
+          </div>
+          <div class="stand" aria-hidden="true"></div>
+        </div>
+
+        <div class="glass" id="glass">
+          <div class="sheen" aria-hidden="true"></div>
+          <div class="wake" aria-hidden="true">
+            <div class="wake-flare"></div>
+            <div class="wake-scan"></div>
+            <div class="wake-idle"></div>
+          </div>
+
+          <section class="screen">
+            <p class="screen-bar">
+              <span class="bar-dot" aria-hidden="true"></span>
+              <svg class="icon" aria-hidden="true"><use href="#i-monitor"/></svg>
+              WORKSTATION
+              <span class="sep" aria-hidden="true"></span>
+              <span class="hud-clock"><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg><span id="hudClock">00:00</span></span>
+            </p>
+
+            <div class="cols">
+              <div class="col-left">
+                <p class="eyebrow"><svg class="icon" aria-hidden="true"><use href="#i-terminal"/></svg>BACKEND ENGINEER</p>
+
+                <h1 class="sr-only">cocofhu</h1>
+                <div class="wordmark-hit" id="wordmarkHit">
+                  <svg class="wordmark" id="wordmark" viewBox="50 294 946 430" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+                    <path class="sig-ink" fill-rule="evenodd" d="M 681.3 319.1 C 672.4 325, 649.5 347.9, 639.8 360.5 C 625.8 378.8, 605 409.3, 605 411.5 C 605 411.7, 603.6 414.3, 601.9 417.2 C 598 423.8, 586.1 447.6, 583 455 C 581.7 458, 580.6 460.6, 580.5 460.8 C 580.4 460.9, 576.7 461.7, 572.4 462.5 C 560.4 464.7, 550.3 466.9, 542 469.1 C 528.3 472.9, 500.6 481.2, 493.6 483.6 C 486.7 486.1, 486.7 486.1, 484.1 483.6 C 481.2 480.9, 472.9 477, 469.9 477 C 466.1 477, 458.1 482, 453.3 487.5 C 442.6 499.8, 414.4 520.1, 391.6 532 C 365.5 545.7, 348.4 549.3, 346.4 541.5 C 345 535.7, 351.9 521.5, 361.1 511.6 C 364.9 507.4, 379.6 497.3, 380.5 498.2 C 380.8 498.4, 380.4 500, 379.8 501.7 C 378.8 504.3, 378.9 505.2, 380.3 507.4 C 383.5 512.3, 387.8 510.3, 392 502 C 395.4 495.4, 395.8 491.5, 393.4 488.2 C 391.7 485.7, 387 483, 384.5 483 C 383.6 483, 375.6 486.6, 366.7 491 C 357.8 495.3, 346.7 500.3, 342.1 502 C 330.9 506.1, 311.2 511.3, 309.4 510.6 C 308.6 510.3, 308 508.9, 308 507.5 C 308 504.7, 304.1 500.4, 300.2 498.9 C 298.9 498.4, 293.1 498, 287.3 498 C 276.9 498, 276.7 498, 272.1 501.4 C 269.6 503.3, 266.1 506.3, 264.5 508 C 253.5 519.7, 189.6 558.1, 154 574.5 C 125.9 587.4, 100.2 594, 94.5 589.7 C 85.5 582.8, 109.2 549.6, 144 520.3 C 156.3 509.9, 177.4 496, 180.8 496 C 181.2 496, 182.1 497.5, 182.8 499.3 C 185.3 506.3, 191.2 506.3, 194.5 499.3 C 198.7 490.4, 194.2 483.1, 183.4 481.5 C 180 481, 178.2 481.6, 169.5 486.5 C 161 491.2, 152.1 497.2, 146 502.3 C 145.2 502.9, 141.1 506.3, 137 509.6 C 132.9 513, 122.8 522.7, 114.5 531.1 C 80 566.6, 70.7 591.3, 88 601.4 C 91 603.2, 93.1 603.5, 102 603.4 C 117.5 603.3, 131.6 599.1, 154.8 587.8 C 179.1 576, 219.9 552.7, 243.8 536.9 C 247.7 534.3, 251 532.5, 251 532.9 C 251 533.4, 250.3 535.7, 249.4 538.1 C 247 544.5, 247 557.7, 249.3 561.2 C 253.7 567.6, 264.5 569, 273.9 564.3 C 285.1 558.6, 299.1 541.7, 304.1 527.6 C 306.4 521.3, 306.4 521.3, 313.1 520.6 C 316.9 520.3, 325.1 518.4, 331.4 516.5 C 344.7 512.5, 345.9 512.3, 343.8 514.8 C 342.9 515.7, 340.7 519.4, 338.9 523 C 330.8 539.1, 332.2 550.1, 343.1 555.8 C 353.2 561.2, 374.1 556, 399.4 541.8 C 411.1 535.3, 429.9 523.2, 433.7 519.7 C 436.9 516.8, 437.5 518.1, 435.6 523.6 C 432.4 533, 434.6 542.5, 441.1 547.1 C 443.9 549.1, 445.7 549.5, 451.7 549.5 C 461.4 549.5, 467.8 546.1, 478.5 535.5 C 492 521.9, 498.6 506, 494.1 497.7 C 493.3 496.2, 492.9 494.8, 493.1 494.6 C 496.5 491.6, 574 472.2, 574 474.3 C 574 474.5, 569.9 484.6, 564.9 496.6 C 559.9 508.6, 554.4 522.3, 552.5 527 C 549.5 534.6, 545.4 544.4, 536.3 565.5 C 534.9 568.8, 532.2 574.8, 530.4 578.8 C 528.5 582.9, 527 586.3, 527 586.5 C 527 586.7, 525.1 590.8, 522.9 595.7 C 520.6 600.5, 517.3 607.9, 515.5 612 C 505.8 634.4, 500 648.4, 497.1 656 C 495.3 660.7, 493.3 666.1, 492.5 668 C 491.8 669.9, 490.7 673.5, 490 676 C 489.3 678.5, 488.4 681.6, 487.8 682.9 C 487.3 684.2, 486.6 688.1, 486.3 691.6 C 485.7 697.6, 485.9 698, 488.8 700.9 C 490.5 702.6, 492.6 704, 493.4 704 C 497.7 704, 504 692.6, 509 675.5 C 511.8 665.9, 519.2 647.5, 542 593.5 C 547.1 581.4, 552.6 568.1, 554.2 564 C 555.9 559.9, 558.7 552.9, 560.5 548.5 C 562.3 544.1, 566.1 534.4, 569 527 C 571.8 519.6, 574.8 512.1, 575.5 510.5 C 576.6 508.1, 585.5 486, 590.3 473.9 C 591.2 471.5, 592 471.3, 601.3 470.1 C 611.4 468.8, 647.9 462.9, 669.3 459 C 675.8 457.8, 681.3 457, 681.6 457.2 C 681.8 457.5, 679.4 463.3, 676.2 470.1 C 673 476.9, 668.6 486.6, 666.5 491.5 C 664.4 496.4, 661.3 502, 659.6 503.8 C 650.5 513.7, 621.1 533.2, 609.9 536.9 C 607.9 537.5, 605.4 539, 604.5 540 C 602.8 541.9, 602.8 542.1, 604.6 544.1 C 606.1 545.7, 607.3 546.1, 610.2 545.7 C 616.9 544.8, 642.2 531.7, 648.7 525.7 C 652.4 522.4, 652.4 524.3, 648.7 533.7 C 642.3 550.1, 639.7 562.7, 641.9 566.8 C 643.1 569, 649.8 573, 652.3 573 C 655.5 573, 659.9 569.7, 663.4 564.8 C 686.4 532.3, 700.8 514, 703.1 514 C 703.6 514, 704 515.9, 704 518.3 C 704 525, 705.9 534.9, 708 539 C 714.6 552, 730.8 553.4, 747.3 542.4 C 752.1 539.2, 763.9 529.3, 765.7 527 C 767.5 524.7, 768.1 526.3, 766.9 529.9 C 765.3 534.5, 766.3 543.5, 768.7 546.8 C 773.2 552.9, 782.9 554.3, 791.2 550.1 C 795.8 547.8, 810.8 534.7, 818.8 526.1 C 823.3 521.3, 824.4 520.9, 822.9 524.8 C 821.2 528.9, 821.3 540, 823 543.5 C 825.1 547.5, 830 550.7, 836.8 552.1 C 847.4 554.3, 869.7 549.4, 892.5 539.8 C 907.2 533.7, 936.1 519.5, 953 510.3 C 959.9 506.5, 967.6 502.4, 970.3 501.1 C 975.1 498.8, 976.3 496.4, 973.3 495.3 C 969.7 493.9, 960.5 497.3, 937 508.5 C 891.8 530, 870.6 538.3, 852 541.5 C 839 543.8, 833 542, 833 536 C 833 531.5, 836.6 518.9, 840.4 510.3 C 845.4 499, 845 495.7, 838.2 494.4 C 835.1 493.8, 834.4 494.3, 818.2 510.5 C 795.3 533.5, 783.4 543.1, 779.5 541.6 C 775.3 540, 779.9 523.1, 788.5 509 C 793.2 501.3, 793.7 498.7, 791 496 C 787.1 492.1, 784.3 493.7, 769.3 508.7 C 748.9 529.1, 734.7 539, 726.1 539 C 718.8 539, 716.8 533.7, 716.6 514 C 716.5 501.8, 715.1 498.7, 709.1 496.9 C 703.9 495.4, 701.4 496.9, 691.3 507.2 C 681.4 517.3, 674.5 525.6, 665.6 537.8 C 661.8 542.9, 658.6 546.9, 658.3 546.7 C 658.1 546.4, 660.2 540.7, 663 533.9 C 665.8 527.1, 668.9 519.7, 669.7 517.5 C 673.4 508.4, 681.2 494.3, 684.3 491 C 694.9 479.8, 721.3 447.3, 734.1 429.8 C 751.5 405.9, 770 374.8, 770 369.4 C 769.9 363.7, 766 360, 760 360 C 748.5 360, 716.5 396.5, 695.5 433.8 C 692.4 439.4, 689 444.5, 688 445 C 685.7 446.2, 662.9 449.6, 614.5 456 C 596.8 458.3, 598 458.3, 598 457 C 598 455.2, 603.1 444, 610.7 429.3 C 623.2 404.8, 643.9 374.2, 659.5 357 C 670.2 345.3, 686.3 331, 687.5 332.2 C 687.7 332.4, 685 337.7, 681.5 344 C 677.9 350.3, 675 356.3, 675 357.2 C 675 362.5, 680.2 366.6, 683.9 364.3 C 686.8 362.5, 703 330.8, 703 326.9 C 703 323.1, 699.9 318.9, 695.7 316.9 C 689.7 314.2, 688.1 314.5, 681.3 319.1 M 752.4 381.1 C 742.9 390.2, 723.3 416.2, 713.1 433.4 C 709 440.4, 708 442.8, 708.5 445 C 709 447.5, 708.6 448.2, 704.7 450.9 C 701.6 453, 699.1 456, 696.6 460.6 C 694.5 464.3, 693.1 467.4, 693.2 467.6 C 694.2 468.5, 726.7 427, 737.9 410.5 C 747.9 395.8, 759.3 377, 758.6 376.3 C 758.3 376, 755.6 378.2, 752.4 381.1 M 459.7 502.5 C 454.5 509.5, 447.7 523.3, 446.6 528.8 C 445.8 533.1, 446.7 536.7, 448.8 537.5 C 451.1 538.4, 460.2 533.5, 466 528.3 C 470.3 524.4, 480 510.2, 480 507.8 C 480 507.4, 478 506.2, 475.6 505.2 C 473.2 504.1, 470 501.6, 468.4 499.6 C 466.8 497.6, 465.3 496, 465 496 C 464.7 496, 462.3 498.9, 459.7 502.5 M 277.3 514.3 C 267.8 524.3, 258.1 544.5, 259.2 552.1 C 260.4 561.1, 279.8 546.1, 288.9 529 C 290.6 525.8, 292 522.8, 292 522.2 C 292 521.7, 290.3 520.3, 288.3 519.3 C 286.1 518.2, 283.9 516, 283 514.2 C 281.1 510.3, 281.1 510.3, 277.3 514.3" />
+                  </svg>
+                </div>
+
+                <p class="lede">
+                  <span class="lede-lead">Hello，大家好，我是 cocofhu。</span>
+                  <span class="lede-more">
+                    99年，INTP，<b>后端研发</b>。目前负责 <b>SkillHub</b> 产品研发，也在探索 <b>AI Harness</b>——
+                    想做有趣、好用的产品，帮到更多人，也和大家一起进步。
+                  </span>
+                </p>
+
+                <ul class="tags">
+                  <li>SKILLHUB</li>
+                  <li>AI HARNESS</li>
+                  <li>BACKEND</li>
+                  <li>PRODUCT</li>
+                </ul>
+
+                
+                <div class="links">
+                  
+                  <a class="pill pill--primary" href="https://github.com/cocofhu" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#i-github"/></svg>GitHub<span class="arrow" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg></span></a>
+                  
+                  
+                  <a class="pill" href="/introduction/atom.xml"><svg class="icon" aria-hidden="true"><use href="#i-rss"/></svg>RSS</a>
+                  
+                  
+                  <a class="pill" href="mailto:cocofhu@outlook.com"><svg class="icon" aria-hidden="true"><use href="#i-mail"/></svg>邮箱</a>
+                  
+                </div>
+              </div>
+
+              <div class="col-right">
+                <div class="viz">
+                  <p class="viz-head">
+                    <span class="hud-clock"><svg class="icon" aria-hidden="true"><use href="#i-layers"/></svg>MyWork</span>
+                    <span class="viz-live"><span class="bar-dot" aria-hidden="true"></span>LIVE</span>
+                  </p>
+
+                  <div class="viz-body">
+                    <div class="viz-stack">
+                      <div class="viz-stage">
+                        <video
+                          class="viz-video"
+                          id="cicdVideo"
+                          src="/introduction/cicd.mp4?v=6"
+                          muted
+                          loop
+                          playsinline
+                          preload="none"
+                          aria-label="Build Awesome Software, Deployed Across The World"
+                        ></video>
+                      </div>
+                      <p class="viz-caption" id="vizCaption" data-beat="build">
+                        <span class="viz-beat viz-beat--build is-on">
+                          <span class="viz-beat-copy">Build <em>Awesome</em> Software</span>
+                        </span>
+                        <span class="viz-beat viz-beat--deploy">
+                          <span class="viz-beat-copy">Deployed Across The <em>World</em></span>
+                        </span>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <button type="button" class="screen-cue" id="screenCue" aria-label="向下滚动到项目">
+              <span class="screen-cue-rail" aria-hidden="true"></span>
+              <span>SCROLL</span>
+              <svg class="icon" aria-hidden="true"><use href="#i-chevron-down"/></svg>
+            </button>
+
+            <p class="screen-foot">
+              <span class="hud-clock"><svg class="icon" aria-hidden="true"><use href="#i-server"/></svg>DISTRIBUTED SYSTEMS · STORAGE · INFRA</span>
+              <span class="sep" aria-hidden="true"></span>
+              <span class="hud-clock"><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg>EST. 2026</span>
+            </p>
+          </section>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ============ page ============ -->
+  <main class="doc">
+    <div class="doc-amb" aria-hidden="true">
+      <i class="doc-orb doc-orb--a"></i>
+      <i class="doc-orb doc-orb--b"></i>
+      <i class="doc-orb doc-orb--c"></i>
+      <span class="doc-beam"></span>
+      <span class="doc-beam doc-beam--b"></span>
+      <span class="doc-dust">
+        <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+        <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+      </span>
+    </div>
+
+    
+    <section class="band band--work" id="work">
+      <p class="band-kicker reveal"><svg class="icon" aria-hidden="true"><use href="#i-layout"/></svg>focusing</p>
+      <div class="band-head reveal" style="--d:60ms">
+        <h2>正在进行</h2>
+        <span class="rule" aria-hidden="true"></span>
+        <span class="count">03</span>
+      </div>
+      <ul class="cases">
+        <li class="case reveal" style="--d:80ms">
+          <a href="https://skillhub.cn/" target="_blank" rel="noopener">
+            <span class="case-no" aria-hidden="true">01</span>
+            <div class="case-media" id="skillhubDemo">
+              <div class="sh-demo" id="shDemo">
+                <div class="sh-chrome">
+                  <span class="sh-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+                  <span class="sh-chrome-title">AGENT · SKILLHUB</span>
+                  <span class="sh-chrome-live">LIVE</span>
+                </div>
+                <div class="sh-view">
+                <div class="sh-body">
+                  <div class="sh-chat" data-cam="ask">
+                    <span class="sh-avatar" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="6.2" />
+                        <path d="M20 20l-3.2-3.2" />
+                      </svg>
+                    </span>
+                    <p class="sh-prompt">
+                      <span class="dim">帮我搜索 </span><b id="shTyped"></b><span class="sh-caret" aria-hidden="true"></span><span class="dim"> 技能</span>
+                    </p>
+                  </div>
+                  <div class="sh-tool" data-cam="search">
+                    <div class="sh-tool-head">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                        <circle cx="11" cy="11" r="7" /><path d="M20 20l-3.5-3.5" />
+                      </svg>
+                      TOOL · SEARCH
+                    </div>
+                    <div class="sh-tool-cmd" id="shQuery">skillhub search …</div>
+                    <div class="sh-tool-bar" aria-hidden="true"><i></i></div>
+                  </div>
+                  <div class="sh-results" data-cam="found">
+                    <div class="sh-results-head">
+                      <b>全部技能</b>
+                      <span>快速发现专家技能，让 AI 从通用走向专用</span>
+                    </div>
+                    <div class="sh-results-tabs" aria-hidden="true">
+                      <span>全部</span>
+                      <span>近期飙升</span>
+                      <span class="is-on">下载量</span>
+                      <span>最近上新</span>
+                    </div>
+                    <div class="sh-results-search" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+                      <span>搜索技能名称、描述或关键词… <em id="shSearchHint"></em></span>
+                    </div>
+                    <div class="sh-grid">
+                      <article class="sh-skill">
+                        <div class="sh-skill-top">
+                          <span class="sh-skill-ico" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                              <path d="M4 19V5" /><path d="M4 19h16" /><path d="M8 15v-3" /><path d="M12 15V8" /><path d="M16 15v-5" />
+                            </svg>
+                          </span>
+                          <div class="sh-skill-head">
+                            <div class="sh-skill-name">
+                              <h4>smart-charts</h4>
+                              <i aria-hidden="true"><svg viewBox="0 0 12 12" fill="none"><path d="M2.5 6.2l2.2 2.2 4.8-4.8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></i>
+                            </div>
+                            <div class="sh-skill-tags">
+                              <span class="sh-skill-cat">数据可视化</span>
+                            </div>
+                          </div>
+                        </div>
+                        <p>把表格与指标转成可配置图表，支持导出与嵌入。</p>
+                        <div class="sh-skill-meta">
+                          <em aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l2.4 6.2L21 10l-5 4.2L17.5 21 12 17.6 6.5 21 8 14.2 3 10l6.6-.8L12 3z"/></svg>277</em>
+                          <em><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 4v10"/><path d="M8 10l4 4 4-4"/><path d="M5 18h14"/></svg>12.4万</em>
+                          <b>SkillHub</b>
+                        </div>
+                      </article>
+                      <article class="sh-skill is-hit">
+                        <div class="sh-skill-top">
+                          <span class="sh-skill-ico" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                              <path d="M7 3h7l5 5v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z" />
+                              <path d="M14 3v5h5" /><path d="M9 13h6" /><path d="M9 17h4" />
+                            </svg>
+                          </span>
+                          <div class="sh-skill-head">
+                            <div class="sh-skill-name">
+                              <h4>pdf-parser</h4>
+                              <span class="sh-badge">HIT</span>
+                            </div>
+                            <div class="sh-skill-tags">
+                              <span class="sh-skill-cat">文档解析</span>
+                            </div>
+                          </div>
+                        </div>
+                        <p>PDF 版面识别与结构化抽取，表格 / 段落一键输出。</p>
+                        <div class="sh-skill-meta">
+                          <em aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l2.4 6.2L21 10l-5 4.2L17.5 21 12 17.6 6.5 21 8 14.2 3 10l6.6-.8L12 3z"/></svg>412</em>
+                          <em><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 4v10"/><path d="M8 10l4 4 4-4"/><path d="M5 18h14"/></svg>8.1万</em>
+                          <b>SkillHub</b>
+                        </div>
+                      </article>
+                      <article class="sh-skill">
+                        <div class="sh-skill-top">
+                          <span class="sh-skill-ico" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                              <path d="M5 20l3.5-1 9.2-9.2a2.1 2.1 0 0 0-3-3L5.5 16 5 20z" />
+                              <path d="M13.5 7.5l3 3" />
+                            </svg>
+                          </span>
+                          <div class="sh-skill-head">
+                            <div class="sh-skill-name">
+                              <h4>copywriter</h4>
+                            </div>
+                            <div class="sh-skill-tags">
+                              <span class="sh-skill-cat">内容创作</span>
+                            </div>
+                          </div>
+                        </div>
+                        <p>多风格文案生成，适配社媒、邮件与落地页语气。</p>
+                        <div class="sh-skill-meta">
+                          <em aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l2.4 6.2L21 10l-5 4.2L17.5 21 12 17.6 6.5 21 8 14.2 3 10l6.6-.8L12 3z"/></svg>198</em>
+                          <em><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 4v10"/><path d="M8 10l4 4 4-4"/><path d="M5 18h14"/></svg>6.7万</em>
+                          <b>SkillHub</b>
+                        </div>
+                      </article>
+                      <article class="sh-skill">
+                        <div class="sh-skill-top">
+                          <span class="sh-skill-ico" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                              <rect x="3" y="4" width="18" height="16" rx="2" /><path d="M8 9h8M8 13h5" />
+                            </svg>
+                          </span>
+                          <div class="sh-skill-head">
+                            <div class="sh-skill-name">
+                              <h4>sheet-agent</h4>
+                              <i aria-hidden="true"><svg viewBox="0 0 12 12" fill="none"><path d="M2.5 6.2l2.2 2.2 4.8-4.8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></i>
+                            </div>
+                            <div class="sh-skill-tags">
+                              <span class="sh-skill-cat">表格助手</span>
+                            </div>
+                          </div>
+                        </div>
+                        <p>清洗、透视与公式补全，把脏表变成可分析数据。</p>
+                        <div class="sh-skill-meta">
+                          <em aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l2.4 6.2L21 10l-5 4.2L17.5 21 12 17.6 6.5 21 8 14.2 3 10l6.6-.8L12 3z"/></svg>156</em>
+                          <em><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 4v10"/><path d="M8 10l4 4 4-4"/><path d="M5 18h14"/></svg>5.2万</em>
+                          <b>SkillHub</b>
+                        </div>
+                      </article>
+                      <article class="sh-skill">
+                        <div class="sh-skill-top">
+                          <span class="sh-skill-ico" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                              <path d="M12 3v4" /><path d="M12 17v4" /><path d="M3 12h4" /><path d="M17 12h4" />
+                              <circle cx="12" cy="12" r="3.2" />
+                            </svg>
+                          </span>
+                          <div class="sh-skill-head">
+                            <div class="sh-skill-name">
+                              <h4>api-tester</h4>
+                            </div>
+                            <div class="sh-skill-tags">
+                              <span class="sh-skill-cat">接口调试</span>
+                            </div>
+                          </div>
+                        </div>
+                        <p>一键组装请求、断言响应，把接口回归做成可复用脚本。</p>
+                        <div class="sh-skill-meta">
+                          <em aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l2.4 6.2L21 10l-5 4.2L17.5 21 12 17.6 6.5 21 8 14.2 3 10l6.6-.8L12 3z"/></svg>134</em>
+                          <em><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 4v10"/><path d="M8 10l4 4 4-4"/><path d="M5 18h14"/></svg>4.1万</em>
+                          <b>SkillHub</b>
+                        </div>
+                      </article>
+                      <article class="sh-skill">
+                        <div class="sh-skill-top">
+                          <span class="sh-skill-ico" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                              <path d="M4 7h16" /><path d="M4 12h10" /><path d="M4 17h13" />
+                            </svg>
+                          </span>
+                          <div class="sh-skill-head">
+                            <div class="sh-skill-name">
+                              <h4>note-summarizer</h4>
+                              <i aria-hidden="true"><svg viewBox="0 0 12 12" fill="none"><path d="M2.5 6.2l2.2 2.2 4.8-4.8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></i>
+                            </div>
+                            <div class="sh-skill-tags">
+                              <span class="sh-skill-cat">笔记摘要</span>
+                            </div>
+                          </div>
+                        </div>
+                        <p>长文 / 会议记录压成要点清单，保留可追溯引用。</p>
+                        <div class="sh-skill-meta">
+                          <em aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l2.4 6.2L21 10l-5 4.2L17.5 21 12 17.6 6.5 21 8 14.2 3 10l6.6-.8L12 3z"/></svg>98</em>
+                          <em><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 4v10"/><path d="M8 10l4 4 4-4"/><path d="M5 18h14"/></svg>3.6万</em>
+                          <b>SkillHub</b>
+                        </div>
+                      </article>
+                    </div>
+                  </div>
+                </div>
+                <div class="sh-action" aria-live="polite">
+                  <span class="sh-action-kicker">Install skill</span>
+                  <span class="sh-action-ico" aria-hidden="true">
+                    <svg class="sh-ico-busy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M12 3v10" /><path d="M8 9l4 4 4-4" /><path d="M5 18h14" />
+                    </svg>
+                    <svg class="sh-ico-ok" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M5 13l4 4L19 7" />
+                    </svg>
+                  </span>
+                  <div class="sh-action-copy">
+                    <strong id="shActionTitle">pdf-parser</strong>
+                    <span class="sh-action-meta">文档解析 · SkillHub</span>
+                    <span data-busy>skillhub install pdf-parser</span>
+                    <span data-ready>已安装 · 可调用</span>
+                  </div>
+                  <div class="sh-action-bar" aria-hidden="true"><i></i></div>
+                </div>
+                </div>
+              </div>
+            </div>
+            <div class="case-copy"><p class="case-meta">2026 · PRODUCT</p><div class="case-title"><span class="case-ico" aria-hidden="true"><svg class="icon"><use href="#i-layers"/></svg></span><h3>SkillHub 研发负责人</h3></div><p>面向<button type="button" class="harness-mark">中国<span class="harness-bubble" role="tooltip">我们做了对中国用户的优化：包括翻译、镜像加速、安全扫描等，我们也在尝试新的功能：AgentPay，Skill比赛等</span></button>用户的 AI <button type="button" class="harness-mark">Skills 社区<span class="harness-bubble" role="tooltip">可以来试试，DSH插件我们也支持了，目前在持续优化</span></button>——帮 Agent 搜索、安装、<button type="button" class="harness-mark">调用<span class="harness-bubble" role="tooltip">我们最近在支持云技能</span></button>Skill。</p><span class="case-go">打开 skillhub.cn <svg class="icon" aria-hidden="true"><use href="#i-arrow-up-right"/></svg></span></div>
+          </a>
+        </li>
+
+        <li class="case reveal" style="--d:120ms">
+          <div class="case-shell case-shell--harness">
+            <span class="case-no" aria-hidden="true">02</span>
+            <div class="case-copy"><p class="case-meta">2026 · AI HARNESS</p><div class="case-title"><span class="case-ico" aria-hidden="true"><svg class="icon"><use href="#i-activity"/></svg></span><h3>AI Harness 提效</h3></div><p>我在并行做<button type="button" class="harness-mark">很多项目<span class="harness-bubble" role="tooltip">我是一个NAS玩家，我有全套的AIO服务器， 有自己的基建：CI/CD、Repo、工具链等，如果有兴趣可以和我交流</span></button>和尝试一些新的东西，最大的问题在于：准确<button type="button" class="harness-mark">表达需求<span class="harness-bubble" role="tooltip">对对对就是这样，太对了</span></button>，以及<button type="button" class="harness-mark">理解 Agent 输出<span class="harness-bubble" role="tooltip">这么多字我也看不懂啊，给我用，最直白，最直接，最不绕弯子......</span></button>。</p>
+<p>目前主要在探索如何在 <button type="button" class="harness-mark">10 秒内<span class="harness-bubble" role="tooltip">多个项目并行切换的时候我要快速理解和决策，这是最大的瓶颈，AI暂时不能取代我的创作力</span></button>读懂 AI 生成的内容——<button type="button" class="harness-mark">Demo<span class="harness-bubble" role="tooltip">前端到底改了什么，交互是什么样的</span></button>、<button type="button" class="harness-mark">流程图<span class="harness-bubble" role="tooltip">快速理解后端流程</span></button>等图形化表达；最近也在想用 <button type="button" class="harness-mark">AI 会议<span class="harness-bubble" role="tooltip">Agent直接拉我开会， 目前已经有一些进展了，敬请期待</span></button>来对齐需求。</p>
+<p>开源实践见 <button type="button" class="harness-mark">Approving<span class="harness-bubble" role="tooltip">因为最开始这个工作流完成之后什么也不管，每天就同意审批，所以就取名叫了approving, 嘿嘿，还是要认真确认啊</span></button>。</p><a class="case-go" href="https://github.com/cocofhu/approving" target="_blank" rel="noopener">打开 Approving <svg class="icon" aria-hidden="true"><use href="#i-arrow-up-right"/></svg></a></div>
+            <div class="case-media">
+              <figure class="harness-art">
+                <div class="harness-art-stage">
+                  <img class="harness-art-base" src="/introduction/assets/harness-need.webp?v=7" alt="你怎么不懂我——表达需求时的真实瞬间" width="800" height="776" loading="lazy" decoding="async">
+                  <span class="harness-puff harness-puff--1" aria-hidden="true"></span>
+                  <span class="harness-puff harness-puff--2" aria-hidden="true"></span>
+                  <span class="harness-ellipsis" aria-hidden="true"></span>
+                </div>
+              </figure>
+            </div>
+          </div>
+        </li>
+
+        <li class="case reveal" style="--d:160ms">
+          <div class="case-shell case-shell--express">
+            <span class="case-no" aria-hidden="true">03</span>
+            <div class="case-copy"><p class="case-meta">2026 · CREATION</p><div class="case-title"><span class="case-ico" aria-hidden="true"><svg class="icon"><use href="#i-pen"/></svg></span><h3>表达输出</h3></div><p>想去<button type="button" class="harness-mark">学习<span class="harness-bubble" role="tooltip">我最近在学计算机图形学</span></button>一些<button type="button" class="harness-mark">运营方法<span class="harness-bubble" role="tooltip">像通过自己的办法获得一些用户</span></button>，让自己的<button type="button" class="harness-mark">产品<span class="harness-bubble" role="tooltip">例如这个主页，是不是很酷</span></button>被更多人用起来。</p>
+<p>目前<button type="button" class="harness-mark">计划<span class="harness-bubble" role="tooltip">大部分情况下我没有计划</span></button>把我做的<button type="button" class="harness-mark">小工具<span class="harness-bubble" role="tooltip">从2024年到现在，我已经有104个小项目了，想知道我做了些什么吗</span></button>在 <button type="button" class="harness-mark">GitHub<span class="harness-bubble" role="tooltip">还没有整理，最近会抽时间整理下</span></button> 上推广一下，也在社交媒体上做一些输出。</p><a class="case-go" href="https://github.com/cocofhu" target="_blank" rel="noopener">去 GitHub 看看 <svg class="icon" aria-hidden="true"><use href="#i-arrow-up-right"/></svg></a></div>
+            <div class="case-media">
+              <figure class="harness-art">
+                <div class="express-art-stage">
+                  <img class="harness-art-base" src="/introduction/assets/express-create.webp?v=5" alt="表达与创作" width="800" height="799" loading="lazy" decoding="async">
+                  <span class="express-bubble" aria-hidden="true"></span>
+                </div>
+              </figure>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </section>
+
+    
+    
+    <section class="band" id="recent">
+      <p class="band-kicker reveal"><svg class="icon" aria-hidden="true"><use href="#i-activity"/></svg>RECENT</p>
+      <div class="band-head reveal" style="--d:60ms">
+        <h2>最近在做</h2>
+        <span class="rule" aria-hidden="true"></span>
+        <span class="count">01 NOTES</span>
+      </div>
+      
+      <p class="band-lede reveal" style="--d:100ms">看看我在做什么</p>
+      
+
+      <ul class="recent">
+        
+        <li class="reveal" style="--d:80ms">
+          <div class="recent-row">
+            <time datetime="2026">2026 </time>
+            <span>
+              
+              <h3>学习计算机图形学</h3>
+              
+              <p>了解一些<button type="button" class="harness-mark">图形学<span class="harness-bubble" role="tooltip">在学习GAMES101-现代计算机图形学入门-闫令琪</span></button>相关的知识，学习一些<button type="button" class="harness-mark">基础知识<span class="harness-bubble" role="tooltip">我无法描述我的需求，看懂建模软件上的菜单那</span></button>，让AI帮我<button type="button" class="harness-mark">3D建模<span class="harness-bubble" role="tooltip">GPT-6在2D绘画上好像非常厉害，真的假的？</span></button>。</p>
+            </span>
+            <span class="tag">VISUAL</span>
+          </div>
+        </li>
+        
+        <li class="reveal" style="--d:120ms">
+          <div class="recent-row">
+            <time datetime="2026">2026 </time>
+            <span>
+              
+              <h3><a href="https://cocofhu.com" target="_blank" rel="noopener">设计一个博客主页</a></h3>
+              
+              <p>就是这个啦，<button type="button" class="harness-mark">酷吧<span class="harness-bubble" role="tooltip">花了很多时间的，中间的特效了用了很多视觉模型能力</span></button>，零成本完全部署在<button type="button" class="harness-mark">Github<span class="harness-bubble" role="tooltip">准确来说是GitHubPages</span></button>上，我在做了一个<button type="button" class="harness-mark">客户端<span class="harness-bubble" role="tooltip">Mac Windows都支持，不过体积稍微有点大，看看怎么优化下</span></button>，可以在客户端上直接修改。</p>
+            </span>
+            <span class="tag">BLOG</span>
+          </div>
+        </li>
+        
+        <li class="reveal" style="--d:160ms">
+          <div class="recent-row">
+            <time datetime="2026">2026</time>
+            <span>
+              
+              <h3>牛马机器人</h3>
+              
+              <p>目前Open Claw、Hermes等<button type="button" class="harness-mark">类似Agent<span class="harness-bubble" role="tooltip">不好用，交互体验很糟糕，多任务上下文会混乱</span></button>在执行指令的过程中没有任何服务意识，做完了才有<button type="button" class="harness-mark">反馈<span class="harness-bubble" role="tooltip">应该像人类一样，收到！</span></button>，我无法<button type="button" class="harness-mark">知道进度<span class="harness-bubble" role="tooltip">你手头上有哪些事情，进度怎么样了，xxxx不做了停一下，xxxx改一下</span></button>。我想让他先收到然后派子Agent去实现，我在中途可以打断修改任务，多<button type="button" class="harness-mark">任务并行<span class="harness-bubble" role="tooltip">Hi, Jarvis</span></button>。</p>
+            </span>
+            <span class="tag">AGENT</span>
+          </div>
+        </li>
+        
+        <li class="reveal" style="--d:200ms">
+          <div class="recent-row">
+            <time datetime="2026">2026</time>
+            <span>
+              
+              <h3>追番，打游戏</h3>
+              
+              <p>最近刚刚给<button type="button" class="harness-mark">异度之刃2<span class="harness-bubble" role="tooltip">我是糕手！</span></button>重制版打通关了，现在在等<button type="button" class="harness-mark">异度之刃3<span class="harness-bubble" role="tooltip">游戏首发买了没玩进去，这次一定通关</span></button>重制版。目前也在看一些<button type="button" class="harness-mark">动漫<span class="harness-bubble" role="tooltip">无职转生、恶女不才 请多关照</span></button>。</p>
+            </span>
+            <span class="tag">GAME</span>
+          </div>
+        </li>
+        
+        <li class="reveal" style="--d:240ms">
+          <div class="recent-row">
+            <time datetime="2026">2026</time>
+            <span>
+              
+              <h3>作为人类写点什么</h3>
+              
+              <p><button type="button" class="harness-mark">写点什么<span class="harness-bubble" role="tooltip">我在读书的那个时候还写博客的，好久没写了</span></button>，在各大博客完整投稿下。</p>
+            </span>
+            <span class="tag">NOTE</span>
+          </div>
+        </li>
+        
+      </ul>
+    </section>
+    
+
+    
+  </main>
+
+  
+  <script src="/introduction/js/article.js"></script>
+  
+</body>
+</html>
