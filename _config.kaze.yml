@@ -1,0 +1,7 @@
+# Open Pages · kaze
+color:
+  link-color: "#3273dc"
+author_description: 写给下一次打开的人
+scrollUpAnimation: true
+lazyload:
+  enable: true

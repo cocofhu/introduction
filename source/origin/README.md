@@ -2,10 +2,10 @@
 
 A Typora-like editor that publishes with Hexo to GitHub Pages.
 
-- **站点**：https://cocofhu.github.io/introduction/
-- **仓库**：https://github.com/cocofhu/introduction
+- **站点**：https://cocofhu.github.io/just-test/
+- **仓库**：https://github.com/cocofhu/just-test
 - **源码分支**：`main` · **站点分支**：`gh-pages`
-- **主题**：cocofhu
+- **主题**：landscape
 
 ---
 

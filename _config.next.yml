@@ -1,0 +1,9 @@
+# Open Pages · next
+scheme: Muse
+op_color_scheme: dark
+sidebar:
+  position: left
+  display: post
+excerpt_description: true
+site_state: true
+darkmode: true
