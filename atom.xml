@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-  <title>cocofhu的博客</title>
+  <title>cocofhu的主页</title>
   
-  <subtitle>cocofhu的博客</subtitle>
+  <subtitle>闪耀扣扣的主页</subtitle>
   <link href="https://cocofhu.com/atom.xml" rel="self"/>
   
   <link href="https://cocofhu.com/"/>
-  <updated>2026-09-07T03:19:55.600Z</updated>
+  <updated>2026-09-07T03:25:14.182Z</updated>
   <id>https://cocofhu.com/</id>
   
   <generator uri="https://hexo.io/">Hexo</generator>
@@ -16,7 +16,7 @@
     <link href="https://cocofhu.com/2026/09/07/untitled/"/>
     <id>https://cocofhu.com/2026/09/07/untitled/</id>
     <published>2026-09-06T23:57:56.000Z</published>
-    <updated>2026-09-07T03:19:55.600Z</updated>
+    <updated>2026-09-07T03:25:14.182Z</updated>
     
     
       
@@ -35,7 +35,7 @@
     <link href="https://cocofhu.com/2026/09/02/hello-open-pages/"/>
     <id>https://cocofhu.com/2026/09/02/hello-open-pages/</id>
     <published>2026-09-02T03:25:40.000Z</published>
-    <updated>2026-09-07T03:19:55.599Z</updated>
+    <updated>2026-09-07T03:25:14.182Z</updated>
     
     
       
