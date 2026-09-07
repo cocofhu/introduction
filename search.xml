@@ -21,7 +21,7 @@
       <link href="/2026/09/02/hello-open-pages/"/>
       <url>/2026/09/02/hello-open-pages/</url>
       
-        <content type="html"><![CDATA[<p>在这里用 <strong>Typora 式</strong> 所见即所得写 Markdown。</p><ul><li>左侧管理文章、草稿和页面</li><li>顶部可切换源码 / Hexo 预览</li><li>登录 GitHub 后一键发布到 GitHub Pages</li></ul><h2 id="写作"><a href="#写作" class="headerlink" title="写作"></a>写作</h2><p>支持标题、列表、引用、代码和图片。</p><blockquote><p>预览来自真实的 <code>hexo generate</code>，不是前端 Markdown 渲染。</p></blockquote><div class="mermaid">graph TD    A[开始] --&gt; B{条件判断}    B --&gt;|Yes| C[执行操作A]    B --&gt;|No| D[执行操作B]    C --&gt; E[结束]    D --&gt; E</div>]]></content>
+        <content type="html"><![CDATA[<p>在这里用 <strong>Typora 式</strong> 所见即所得写 Markdown。</p><ul><li>左侧管理文章、草稿和页面</li><li>顶部可切换源码 / Hexo 预览</li><li>登录 GitHub 后一键发布到 GitHub Pages</li></ul><h2 id="写作"><a href="#写作" class="headerlink" title="写作"></a>写作</h2><p>支持标题、列表、引用、代码和图片。</p><blockquote><p>预览来自真实的 <code>hexo generate</code>，不是前端 Markdown 渲染。</p></blockquote><div class="mermaid">graph TD    A[开始] --&gt; B{条件判断}    B --&gt;|Yes| C[执行操作A]    B --&gt;|No| D[执行操作B]    C --&gt; E[结束]    D --&gt; E</div><p><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>f</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow>f(x)</math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.1076em;">f</span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mclose">)</span></span></span></span></p>]]></content>
       
       
       <categories>

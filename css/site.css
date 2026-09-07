@@ -979,6 +979,15 @@
       flex: 0 1 auto;
     }
 
+    /* Static MyWork still when cicd play fails / stalls (WeChat + desktop) */
+    .viz-stage.is-fallback {
+      background-color: #050506;
+    }
+
+    .viz-stage.is-fallback .viz-video:not(.is-live) {
+      opacity: 0;
+    }
+
     .viz-video {
       display: block;
       position: absolute;

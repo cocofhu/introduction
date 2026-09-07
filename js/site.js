@@ -105,7 +105,16 @@
     let starArmed = false;
     let starLooping = false;
     let starLoaded = false;
+    let starHandoffPending = false;
+    let starLoopAttempt = 0;
+    let stallWatchId = 0;
+    let lastStarLoopTime = -1;
+    let starStallHits = 0;
     const STAR_INTRO_SRC = (window.COCOFHU && window.COCOFHU.starIntro) || "assets/star-handoff.mp4?v=bake2";
+    // g1.1: never wait forever on canplay — WeChat / desktop both stall here
+    const PLAY_WAIT_MS = 900;
+    const ADVANCE_WAIT_MS = 1400;
+    const STALL_POLL_MS = 1400;
 
     function loadStarSrc() {
       if (starLoaded) return;
@@ -124,18 +133,39 @@
       try { starIntro.load(); } catch (_) {}
     }
 
+    // g1.1: timeout + onFail so poster/intro stay if play never starts.
+    // These clips are preload="none", so play() is also what starts the fetch —
+    // waiting on canplay first would leave readyState at 0 forever.
     function playVid(el, onFail) {
-      if (!el) return;
+      if (!el) {
+        if (typeof onFail === "function") onFail();
+        return;
+      }
+      let settled = false;
+      const fail = () => {
+        if (settled) return;
+        settled = true;
+        if (typeof onFail === "function") onFail();
+      };
       const go = () => {
+        if (settled) return;
         const p = el.play();
-        if (p && p.catch) {
-          p.catch(() => {
-            if (typeof onFail === "function") onFail();
-          });
+        if (p && typeof p.then === "function") {
+          p.then(() => { settled = true; }).catch(fail);
+        } else {
+          settled = true;
         }
       };
-      if (el.readyState >= 2) go();
-      else el.addEventListener("canplay", go, { once: true });
+      go();
+      setTimeout(() => {
+        if (settled) return;
+        // Still buffering counts as alive — only a stopped element is a failure
+        if (!el.paused && el.readyState >= 2) {
+          settled = true;
+          return;
+        }
+        fail();
+      }, PLAY_WAIT_MS);
     }
 
     function showStar(el) {
@@ -143,7 +173,36 @@
       if (starLoop) starLoop.classList.toggle("is-shown", el === starLoop);
     }
 
-    // Poster / static-frame fallback when mobile recycles video buffers (g3.2)
+    function isVidAdvancing(el, prevTime) {
+      if (!el || el.paused) return false;
+      const t = el.currentTime || 0;
+      return t - prevTime > 0.04;
+    }
+
+    // Wait until currentTime actually moves (g1.2 handoff gate)
+    function waitForAdvance(el, cb, timeoutMs) {
+      if (!el) {
+        if (typeof cb === "function") cb(false);
+        return;
+      }
+      const t0 = el.currentTime || 0;
+      const start = performance.now();
+      const limit = timeoutMs || ADVANCE_WAIT_MS;
+      const tick = () => {
+        if (isVidAdvancing(el, t0)) {
+          if (typeof cb === "function") cb(true);
+          return;
+        }
+        if (performance.now() - start >= limit) {
+          if (typeof cb === "function") cb(false);
+          return;
+        }
+        requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    }
+
+    // Poster / static-frame fallback — keep visible until a real frame paints (g1.1 / g3.2)
     function clearStarFallback() {
       if (!starBg) return;
       starBg.classList.remove("is-fallback");
@@ -161,8 +220,18 @@
         starBg.style.backgroundPosition = "center";
       }
       starBg.classList.add("is-fallback");
-      // Prefer intro element (keeps poster attr) over blank loop
+      // Prefer intro element (keeps poster attr / last frame) over blank loop
       if (starIntro) showStar(starIntro);
+    }
+
+    function keepStarStill() {
+      // Prefer live intro last frame; else static poster — never pure black
+      if (starIntro && starIntro.getAttribute("src")) {
+        showStar(starIntro);
+        if (starIntro.readyState < 2) showStarPosterFallback();
+      } else {
+        showStarPosterFallback();
+      }
     }
 
     function reloadAndPlay(el, onFail) {
@@ -190,16 +259,187 @@
         }
       };
       try { el.load(); } catch (_) {}
-      el.addEventListener("canplay", attempt, { once: true });
-      el.addEventListener("error", fail, { once: true });
+      attempt();
       setTimeout(() => {
         if (settled) return;
-        if (el.readyState >= 2) attempt();
-        else fail();
-      }, 700);
+        if (!el.paused && el.readyState >= 2) {
+          ok();
+          return;
+        }
+        fail();
+      }, PLAY_WAIT_MS);
     }
 
-    // Resume loop/intro after background without replaying signature intro (g3.1 / g3.3)
+    function finishStarHandoff() {
+      starHandoffPending = false;
+      clearStarFallback();
+      showStar(starLoop);
+      dropStarIntro();
+      lastStarLoopTime = starLoop ? (starLoop.currentTime || 0) : -1;
+      starStallHits = 0;
+    }
+
+    // g1.2: start cycle while intro stays; drop only after cycle time moves
+    function beginStarLoopPlayback() {
+      if (!starLoop || reduceMotion) return;
+      loadStarSrc();
+      starHandoffPending = true;
+      const attempt = ++starLoopAttempt;
+      // Keep intro (or poster) on screen during the gap
+      if (starIntro && starIntro.getAttribute("src")) showStar(starIntro);
+      else showStarPosterFallback();
+
+      const afterPlay = () => {
+        waitForAdvance(starLoop, (ok) => {
+          if (attempt !== starLoopAttempt) return;
+          if (ok) {
+            finishStarHandoff();
+            return;
+          }
+          // Loop not advancing yet — keep still, let watchdog / gesture retry
+          keepStarStill();
+        });
+      };
+
+      const startLoop = () => {
+        if (attempt !== starLoopAttempt) return;
+        try { starLoop.currentTime = 0; } catch (_) {}
+        playVid(starLoop, () => {
+          if (attempt !== starLoopAttempt) return;
+          keepStarStill();
+        });
+        afterPlay();
+      };
+
+      if (starLoop.readyState >= 2) startLoop();
+      else {
+        let started = false;
+        const once = () => {
+          if (started || attempt !== starLoopAttempt) return;
+          started = true;
+          startLoop();
+        };
+        starLoop.addEventListener("canplay", once, { once: true });
+        setTimeout(() => {
+          if (started || attempt !== starLoopAttempt) return;
+          if (starLoop.readyState >= 2) once();
+          else keepStarStill();
+        }, PLAY_WAIT_MS);
+      }
+    }
+
+    function enterStarLoop() {
+      if (!starIntro || !starLoop || reduceMotion || starLooping) return;
+      starPlayed = true;
+      starArmed = false;
+      starLooping = true;
+      // Handoff clip already ends on the loop's last frame; jump to loop[0]
+      // which matches that last frame (seamless loop source).
+      beginStarLoopPlayback();
+      ensureStallWatch();
+    }
+
+    // g1.3: after settle, wake frozen cycle / cicd without a full refresh
+    function ensureStallWatch() {
+      if (stallWatchId || reduceMotion) return;
+      stallWatchId = window.setInterval(() => {
+        if (document.hidden) return;
+        nudgeStarPlayback(false);
+        if (cicdVideo && typeof cicdVideo.nudge === "function") cicdVideo.nudge();
+      }, STALL_POLL_MS);
+    }
+
+    function nudgeStarPlayback(force) {
+      if (document.hidden || reduceMotion || !starBg) return;
+      const wantOn = introDone && (progress > 0.88 || (starPlayed && progress > 0.55));
+      if (!wantOn) return;
+      starBg.classList.add("is-on");
+
+      if (starLooping && starLoop) {
+        const t = starLoop.currentTime || 0;
+        // First sample only — avoid restarting a fresh handoff attempt
+        if (!force && lastStarLoopTime < 0) {
+          lastStarLoopTime = t;
+          return;
+        }
+        const frozen = starLoop.paused || Math.abs(t - lastStarLoopTime) < 0.02;
+        if (!force) {
+          if (frozen) starStallHits += 1;
+          else {
+            starStallHits = 0;
+            lastStarLoopTime = t;
+            // Late advance after a timed-out waitForAdvance — complete handoff
+            if (starHandoffPending) finishStarHandoff();
+            else {
+              clearStarFallback();
+              showStar(starLoop);
+            }
+            return;
+          }
+          lastStarLoopTime = t;
+          // Require two consecutive frozen polls unless forced by gesture
+          if (starStallHits < 2) return;
+        } else {
+          lastStarLoopTime = t;
+        }
+        starStallHits = 0;
+
+        if (starHandoffPending || !starLoop.classList.contains("is-shown")) {
+          // Still in handoff — retry cycle without dropping intro
+          beginStarLoopPlayback();
+          return;
+        }
+
+        if (starLoop.readyState < 2 || starLoop.networkState === 3) {
+          keepStarStill();
+          reloadAndPlay(starLoop, keepStarStill);
+        } else {
+          playVid(starLoop, () => {
+            keepStarStill();
+            reloadAndPlay(starLoop, keepStarStill);
+          });
+          waitForAdvance(starLoop, (ok) => {
+            if (ok) {
+              clearStarFallback();
+              showStar(starLoop);
+            } else {
+              keepStarStill();
+            }
+          });
+        }
+        return;
+      }
+
+      if (!starPlayed && starIntro) {
+        if (starIntro.readyState < 2) loadStarSrc();
+        showStar(starIntro);
+        if (starIntro.paused || force) {
+          playVid(starIntro, showStarPosterFallback);
+          waitForAdvance(starIntro, (ok) => {
+            if (ok) clearStarFallback();
+            else showStarPosterFallback();
+          });
+        }
+      }
+    }
+
+    // g2.1: shared unlock for WeChat autoplay + desktop freeze
+    let lastKickAt = 0;
+    function kickPlayback(force) {
+      if (document.hidden || !introDone) return;
+      const now = performance.now();
+      if (!force && now - lastKickAt < 900) return;
+      lastKickAt = now;
+      nudgeStarPlayback(true);
+      if (cicdVideo) {
+        if (typeof cicdVideo.start === "function") cicdVideo.start();
+        if (typeof cicdVideo.resume === "function") cicdVideo.resume();
+        if (typeof cicdVideo.nudge === "function") cicdVideo.nudge(true);
+      }
+      ensureStallWatch();
+    }
+
+    // Resume loop/intro after background without replaying signature intro (g2.2 / g3)
     function resumeStarfield() {
       if (document.hidden || !starBg) return;
       const wantOn = introDone && (progress > 0.88 || (starPlayed && progress > 0.55));
@@ -212,25 +452,7 @@
         return;
       }
 
-      if (starLooping && starLoop) {
-        showStar(starLoop);
-        if (starLoop.readyState < 2 || starLoop.networkState === 3) {
-          reloadAndPlay(starLoop, showStarPosterFallback);
-        } else if (starLoop.paused) {
-          playVid(starLoop, () => reloadAndPlay(starLoop, showStarPosterFallback));
-        } else {
-          clearStarFallback();
-        }
-        return;
-      }
-
-      if (!starPlayed && starIntro) {
-        if (starIntro.readyState < 2) loadStarSrc();
-        showStar(starIntro);
-        if (starIntro.paused) {
-          playVid(starIntro, showStarPosterFallback);
-        }
-      }
+      nudgeStarPlayback(true);
     }
 
     function resetStarBg() {
@@ -238,8 +460,13 @@
       starArmed = false;
       starLooping = false;
       starLoaded = false;
+      starHandoffPending = false;
+      starLoopAttempt = 0;
+      lastStarLoopTime = -1;
+      starStallHits = 0;
       if (!starBg) return;
       starBg.classList.remove("is-on");
+      clearStarFallback();
       if (starIntro) {
         if (!starIntro.getAttribute("src")) starIntro.src = STAR_INTRO_SRC;
         try { starIntro.pause(); starIntro.currentTime = 0; } catch (_) {}
@@ -248,25 +475,6 @@
         try { starLoop.pause(); starLoop.currentTime = 0; } catch (_) {}
       }
       showStar(null);
-    }
-
-    function enterStarLoop() {
-      if (!starIntro || !starLoop || reduceMotion || starLooping) return;
-      starPlayed = true;
-      starArmed = false;
-      starLooping = true;
-      // Handoff clip already ends on the loop's last frame; jump to loop[0]
-      // which matches that last frame (seamless loop source).
-      loadStarSrc();
-      const startLoop = () => {
-        try { starLoop.currentTime = 0; } catch (_) {}
-        clearStarFallback();
-        showStar(starLoop);
-        playVid(starLoop);
-        dropStarIntro();
-      };
-      if (starLoop.readyState >= 2) startLoop();
-      else starLoop.addEventListener("canplay", startLoop, { once: true });
     }
 
     function setStarBg(on) {
@@ -284,17 +492,23 @@
         return;
       }
 
+      if (on) ensureStallWatch();
+
       if (on && !starPlayed && !starArmed) {
         starArmed = true;
         starLooping = false;
-        clearStarFallback();
+        // g1.1: keep poster until a real intro frame advances — never clear-then-wait
+        showStarPosterFallback();
         showStar(starIntro);
-        playVid(starIntro);
+        playVid(starIntro, showStarPosterFallback);
+        waitForAdvance(starIntro, (ok) => {
+          if (ok) clearStarFallback();
+          else showStarPosterFallback();
+        });
       } else if (on && !starPlayed && starArmed && starIntro && starIntro.paused) {
-        playVid(starIntro);
-      } else if (on && starLooping && starLoop && starLoop.paused) {
-        if (starLoop.readyState < 2) reloadAndPlay(starLoop, showStarPosterFallback);
-        else playVid(starLoop, () => reloadAndPlay(starLoop, showStarPosterFallback));
+        playVid(starIntro, showStarPosterFallback);
+      } else if (on && starLooping && starLoop && (starLoop.paused || starHandoffPending)) {
+        nudgeStarPlayback(true);
       }
     }
 
@@ -315,7 +529,7 @@
       starLoop.addEventListener("ended", () => {
         if (!starLooping) return;
         try { starLoop.currentTime = 0; } catch (_) {}
-        playVid(starLoop);
+        playVid(starLoop, keepStarStill);
       });
     }
 
@@ -669,19 +883,45 @@
       });
     }
 
-    // Right column: looping CI/CD video + caption beats
+    // Right column: looping CI/CD video + caption beats (same stall class as stars — g1.3 / g2)
     cicdVideo = (() => {
       const el = document.getElementById("cicdVideo");
       if (!el) return null;
       const caption = document.getElementById("vizCaption");
+      const stage = el.closest(".viz-stage");
       const beatBuild = caption && caption.querySelector(".viz-beat--build");
       const beatDeploy = caption && caption.querySelector(".viz-beat--deploy");
       let running = false;
       let pinned = true;
       let beat = "build";
+      let lastCicdTime = -1;
+      let cicdStallHits = 0;
       // cicd.mp4 ~6.46s: code+pipeline → EXE/servers around 2.85s
       const DEPLOY_AT = 2.85;
       const BUILD_BACK = 2.55;
+
+      const showCicdPoster = () => {
+        if (!stage) return;
+        // Hide empty/black video so stage poster can show (WeChat fail path)
+        el.classList.remove("is-live");
+        const poster = el.getAttribute("poster") || "";
+        if (poster) {
+          stage.style.backgroundImage = `url("${poster}")`;
+          stage.style.backgroundSize = "contain";
+          stage.style.backgroundPosition = "center";
+          stage.style.backgroundRepeat = "no-repeat";
+        }
+        stage.classList.add("is-fallback");
+      };
+
+      const clearCicdPoster = () => {
+        if (!stage) return;
+        stage.classList.remove("is-fallback");
+        stage.style.removeProperty("background-image");
+        stage.style.removeProperty("background-size");
+        stage.style.removeProperty("background-position");
+        stage.style.removeProperty("background-repeat");
+      };
 
       const setBeat = (next) => {
         if (!caption || !beatBuild || !beatDeploy || next === beat) return;
@@ -719,14 +959,62 @@
         else if (beat === "deploy" && t < BUILD_BACK) setBeat("build");
       };
 
+      // g2.3: ≤900px never plays / fetches decode path
+      const phoneSplit = () => window.innerWidth <= 900;
+
       const tryPlay = () => {
         if (!running || !pinned || reduceMotion) return;
-        if (window.innerWidth <= 900) {
+        if (phoneSplit()) {
           el.pause();
           return;
         }
-        const p = el.play();
-        if (p && typeof p.then === "function") p.catch(() => {});
+        // Already painting — just keep playing without flashing the poster
+        if (!el.paused && el.readyState >= 2 && (el.currentTime || 0) > 0.05) {
+          clearCicdPoster();
+          el.classList.add("is-live");
+          const keep = el.play();
+          if (keep && typeof keep.catch === "function") keep.catch(() => showCicdPoster());
+          return;
+        }
+        // Keep poster until frames advance — avoid black MyWork (g1.1 / f3)
+        showCicdPoster();
+        playVid(el, showCicdPoster);
+        waitForAdvance(el, (ok) => {
+          if (ok) {
+            clearCicdPoster();
+            el.classList.add("is-live");
+            lastCicdTime = el.currentTime || 0;
+            cicdStallHits = 0;
+          } else {
+            showCicdPoster();
+          }
+        });
+      };
+
+      const nudge = (force) => {
+        if (!running || !pinned || reduceMotion || phoneSplit() || document.hidden) return;
+        const t = el.currentTime || 0;
+        const frozen = el.paused || (lastCicdTime >= 0 && Math.abs(t - lastCicdTime) < 0.02);
+        if (!force && lastCicdTime >= 0) {
+          if (frozen) cicdStallHits += 1;
+          else {
+            cicdStallHits = 0;
+            lastCicdTime = t;
+            clearCicdPoster();
+            el.classList.add("is-live");
+            return;
+          }
+          lastCicdTime = t;
+          if (cicdStallHits < 2) return;
+        } else {
+          lastCicdTime = t;
+        }
+        cicdStallHits = 0;
+        if (el.readyState < 2 || el.networkState === 3) {
+          showCicdPoster();
+          try { el.load(); } catch (_) {}
+        }
+        tryPlay();
       };
 
       el.addEventListener("timeupdate", syncCaption);
@@ -734,10 +1022,11 @@
       el.addEventListener("loadedmetadata", syncCaption);
 
       el.addEventListener("loadeddata", () => {
-        el.classList.add("is-live");
         if (reduceMotion) {
+          el.classList.add("is-live");
           try { el.currentTime = Math.min(0.1, (el.duration || 1) * 0.4); } catch (_) {}
           el.pause();
+          showCicdPoster();
           if (beatBuild && beatDeploy) {
             beatBuild.classList.add("is-on");
             beatDeploy.classList.remove("is-on");
@@ -762,12 +1051,16 @@
       return {
         start() {
           running = true;
-          el.classList.add("is-live");
           if (reduceMotion) {
             el.pause();
+            showCicdPoster();
+            // Poster path: keep video opacity 0 via missing is-live
             return;
           }
+          if (phoneSplit()) return;
+          // Do not set is-live until frames advance — otherwise black video covers poster
           tryPlay();
+          ensureStallWatch();
         },
         stop() {
           running = false;
@@ -776,6 +1069,7 @@
         resume() {
           if (running) tryPlay();
         },
+        nudge,
         resize() {},
       };
     })();
@@ -802,19 +1096,36 @@
       }
     });
 
-    // iOS / bfcache path — resume star without replaying signature timeline (g3.1 / g3.3)
+    // iOS / bfcache path — resume star + cicd without replaying signature (g2.2)
     window.addEventListener("pageshow", () => {
       if (document.hidden) return;
+      if (cicdVideo && introDone) {
+        cicdVideo.start();
+        cicdVideo.resume();
+      }
       setStarBg(introDone && progress > 0.88);
       resumeStarfield();
     });
 
     if ("onresume" in document) {
       document.addEventListener("resume", () => {
+        if (cicdVideo && introDone) {
+          cicdVideo.start();
+          cicdVideo.resume();
+        }
         setStarBg(introDone && progress > 0.88);
         resumeStarfield();
       });
     }
+
+    // g2.1: tap / pointer after intro can unlock WeChat autoplay (no new play button)
+    ["pointerdown", "touchend"].forEach((ev) => {
+      window.addEventListener(ev, () => {
+        if (!introDone || document.hidden) return;
+        if (!(starArmed || starPlayed || starLooping || progress > 0.88)) return;
+        kickPlayback(false);
+      }, { passive: true });
+    });
 
     /* ============================================================
        Intro: sign, hand the signature to the desk, then release
@@ -862,6 +1173,8 @@
       if (diveLock || !introDone) return;
       if (progress >= 0.96) {
         diveArmed = false;
+        // Already inside — still use this gesture to unstick videos (g2.1)
+        kickPlayback(true);
         return;
       }
       diveArmed = false;
@@ -873,10 +1186,13 @@
       const enterY = Math.max(1, Math.floor(window.innerHeight * GROW));
       const dist = Math.abs(enterY - window.scrollY);
       const dur = reduceMotion ? 1 : Math.min(1550, Math.max(1100, dist * 0.65));
+      // g2.1: dive scroll/tap is a trusted gesture — arm star + cicd
+      kickPlayback(true);
       smoothScrollTo(enterY, dur);
       setTimeout(() => {
         diveLock = false;
         layout();
+        kickPlayback(true);
       }, dur + 60);
     }
 
@@ -968,6 +1284,8 @@
       lightUp();
       land();
       release();
+      // g2.1: WeChat / desktop — unlock playback inside the skip gesture
+      kickPlayback(true);
     }
 
     // Desktop: wheel / keys can skip. Mobile: only a deliberate swipe skips —
