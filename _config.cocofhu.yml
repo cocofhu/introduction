@@ -58,6 +58,8 @@ work:
           tip: 我最近在学计算机图形学
         - match: 计划
           tip: 大部分情况下我没有计划
+        - match: 社交媒体
+          tip: CSDN、X、知乎、B站
 recent:
   title: 最近在做
   lede: 看看我在做什么
