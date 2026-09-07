@@ -1,4 +1,4 @@
-# cocofhu的博客
+# cocofhu的主页
 
 cocofhu的博客
 
