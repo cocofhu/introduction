@@ -1,4 +1,18 @@
 # Open Pages · cocofhu
+intro:
+  items:
+    - lead: "Hello，大家好，我是 cocofhu。"
+      hovers:
+        - match: SkillHub
+          tip: "面向中国用户的 AI Skills 社区"
+        - match: "AI Harness"
+          tip: "让人和 Agent 更好协作的工作流"
+      more: "99年，INTP，**后端研发**。目前负责 **SkillHub** 产品研发，也在探索 **AI Harness**——想做有趣、好用的产品，帮到更多人，也和大家一起进步。"
+  tags:
+    - label: SKILLHUB
+    - label: "AI HARNESS"
+    - label: BACKEND
+    - label: PRODUCT
 links:
   github: "https://github.com/cocofhu"
   rss: atom.xml
@@ -126,3 +140,9 @@ recent:
         - match: 写点什么
           tip: 我在读书的那个时候还写博客的，好久没写了
 writing_limit: 0
+about:
+  title: 关于我
+  items:
+    - lede: 这个人很神秘
+      body: 这个人很神秘
+      hovers: []
