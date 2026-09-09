@@ -145,4 +145,6 @@ about:
   items:
     - lede: 这个人很神秘
       body: 这个人很神秘
-      hovers: []
+      hovers:
+        - match: 神秘
+          tip: 很懒
