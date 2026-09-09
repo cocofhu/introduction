@@ -63,6 +63,7 @@ html { scrollbar-width: thin; scrollbar-color: rgba(28, 25, 21, 0.35) transparen
       <symbol id="i-mail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.99 5.73a2 2 0 0 1-2.02 0L2 7"/></symbol>
       <symbol id="i-rotate" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></symbol>
       <symbol id="i-calendar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></symbol>
+      <symbol id="i-user" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol>
     </defs>
   </svg>
 
@@ -118,18 +119,30 @@ html { scrollbar-width: thin; scrollbar-color: rgba(28, 25, 21, 0.35) transparen
   </button>
 
   <aside class="star-bg" id="starBg" aria-hidden="true">
+    <!-- x5-video-player-type: X5 (Android WeChat) hoists video into a native
+         layer where z-index and opacity do nothing, so the hidden clip of the
+         handoff pair paints too. Same-layer playback must be declared before
+         playback starts, and must not be paired with x5-playsinline. -->
     <video
       id="starIntro"
       muted
       playsinline
+      webkit-playsinline="true"
+      x5-video-player-type="h5-page"
+      x-webkit-airplay="allow"
+      disablepictureinpicture
       preload="none"
-      poster="/assets/star-scroll-poster.jpg?v=bake1"
+      data-poster="/assets/star-scroll-poster.jpg?v=bake1"
       src="/assets/star-handoff.mp4?v=bake2"
     ></video>
     <video
       id="starLoop"
       muted
       playsinline
+      webkit-playsinline="true"
+      x5-video-player-type="h5-page"
+      x-webkit-airplay="allow"
+      disablepictureinpicture
       loop
       preload="none"
       src="/assets/star-loop.mp4?v=bake2"
@@ -186,20 +199,29 @@ html { scrollbar-width: thin; scrollbar-color: rgba(28, 25, 21, 0.35) transparen
                   </svg>
                 </div>
 
+                
                 <p class="lede">
                   <span class="lede-lead">Hello，大家好，我是 cocofhu。</span>
+                  
                   <span class="lede-more">
-                    99年，INTP，<b>后端研发</b>。目前负责 <b>SkillHub</b> 产品研发，也在探索 <b>AI Harness</b>——
-                    想做有趣、好用的产品，帮到更多人，也和大家一起进步。
+                    99年，INTP，<b>后端研发</b>。目前负责 <button type="button" class="harness-mark"><b>SkillHub</b><span class="harness-bubble" role="tooltip">面向中国用户的 AI Skills 社区</span></button> 产品研发，也在探索 <button type="button" class="harness-mark"><b>AI Harness</b><span class="harness-bubble" role="tooltip">让人和 Agent 更好协作的工作流</span></button>——想做有趣、好用的产品，帮到更多人，也和大家一起进步。
                   </span>
+                  
                 </p>
 
+                
                 <ul class="tags">
+                  
                   <li>SKILLHUB</li>
+                  
                   <li>AI HARNESS</li>
+                  
                   <li>BACKEND</li>
+                  
                   <li>PRODUCT</li>
+                  
                 </ul>
+                
 
                 
                 <div class="links">
@@ -233,6 +255,10 @@ html { scrollbar-width: thin; scrollbar-color: rgba(28, 25, 21, 0.35) transparen
                           muted
                           loop
                           playsinline
+                          webkit-playsinline="true"
+                          x5-video-player-type="h5-page"
+                          x-webkit-airplay="allow"
+                          disablepictureinpicture
                           preload="none"
                           aria-label="Build Awesome Software, Deployed Across The World"
                         ></video>
@@ -636,6 +662,41 @@ html { scrollbar-width: thin; scrollbar-color: rgba(28, 25, 21, 0.35) transparen
     
 
     
+
+    
+    <section class="band band--about" id="about">
+      <p class="band-kicker reveal"><svg class="icon" aria-hidden="true"><use href="#i-user"/></svg>ABOUT</p>
+      <div class="band-head reveal" style="--d:60ms">
+        <h2>关于我</h2>
+        <span class="rule" aria-hidden="true"></span>
+        <span class="count">ME</span>
+      </div>
+      
+      <p class="band-lede reveal" style="--d:100ms">滑到这里打个招呼</p>
+      
+      <div class="about-copy reveal" style="--d:140ms">
+        
+        <p>Hello，大家好，我是 <b>cocofhu</b>。</p>
+        
+        <p>99年，INTP，<b>后端研发</b>。目前负责 SkillHub 产品研发，也在探索 AI Harness——想做有趣、好用的产品，帮到更多人，也和大家一起进步。</p>
+        
+      </div>
+    </section>
+
+    <aside class="about-buddy" id="aboutBuddy" aria-hidden="true">
+      <video
+        id="aboutBuddyVideo"
+        class="about-buddy-video"
+        src="/assets/about-me.webm?v=1"
+        muted
+        playsinline
+        webkit-playsinline="true"
+        x5-video-player-type="h5-page"
+        disablepictureinpicture
+        preload="none"
+        aria-label="关于我"
+      ></video>
+    </aside>
   </main>
 
   

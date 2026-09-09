@@ -184,13 +184,27 @@ html[data-theme="light"] .art-dust { opacity: 0.22; }
   height: auto;
 }
 
+/* Editorial kicker (g2.1/g2.2): --latin like DARK/LIGHT, 600 / 0.68rem / 0.14em, accent tick — not Silkscreen HUD */
 .art-kicker {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  font-family: var(--pixel);
-  font-size: 0.7rem;
-  letter-spacing: 0.1em;
+  gap: 0.45rem;
+  font-family: var(--latin);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  line-height: 1;
   color: var(--kicker);
+  text-transform: uppercase;
+}
+
+.art-kicker::before {
+  content: "";
+  width: 8px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--accent);
+  flex-shrink: 0;
 }
 
 .art-bar .art-kicker { margin-left: 0.2rem; }
@@ -264,9 +278,10 @@ html[data-theme="light"] .art-theme-seg__lab[data-for="light"] { color: var(--in
   border: 1px solid var(--line);
   background: var(--s1);
   color: var(--soft);
-  font-family: var(--pixel);
-  font-size: 0.66rem;
-  letter-spacing: 0.08em;
+  font-family: var(--reading);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
   padding: 0.38rem 0.7rem;
   border-radius: 999px;
   cursor: pointer;
@@ -388,7 +403,7 @@ html[data-theme="light"] .art-theme-seg__lab[data-for="light"] { color: var(--in
 
 .art-body li::marker { color: var(--accent); }
 
-/* Quote raised surface + pixel NOTE (g1.2) */
+/* Quote raised surface + editorial NOTE (g2.3) — leave --pixel */
 .art-body blockquote {
   position: relative;
   padding: 0.85rem 1rem 0.9rem 1.05rem;
@@ -400,12 +415,17 @@ html[data-theme="light"] .art-theme-seg__lab[data-for="light"] { color: var(--in
 
 .art-body blockquote::before {
   content: "NOTE";
-  display: block;
-  font-family: var(--pixel);
-  font-size: 0.58rem;
-  letter-spacing: 0.12em;
-  color: var(--accent);
-  margin-bottom: 0.3rem;
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--latin);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  line-height: 1;
+  color: var(--kicker);
+  margin-bottom: 0.45rem;
+  padding-left: calc(8px + 0.45rem);
+  background: linear-gradient(var(--accent), var(--accent)) left center / 8px 2px no-repeat;
 }
 
 .art-body hr {
@@ -672,19 +692,66 @@ html[data-theme="light"] .art-theme-seg__lab[data-for="light"] { color: var(--in
   stroke: color-mix(in srgb, var(--accent) 70%, var(--line)) !important;
 }
 
+/* Mermaid Yes/No edge chips (g1.1/g1.2/g1.3): cover SVG rect + htmlLabels foreignObject/.labelBkg; follow data-theme tokens */
 .art-body .mermaid svg .edgeLabel,
 .art-body .mermaid svg .edgeLabel span,
 .art-body .mermaid svg .edgeLabel p,
-.art-body .mermaid .edgeLabel {
+.art-body .mermaid .edgeLabel,
+.art-body .mermaid svg .edgeLabel foreignObject div,
+.art-body .mermaid svg .edgeLabel foreignObject span,
+.art-body .mermaid svg .edgeLabel .labelBkg,
+.art-body .mermaid .labelBkg {
   color: var(--accent) !important;
-  background: transparent !important;
+  background-color: var(--node) !important;
+  background: var(--node) !important;
   font-family: var(--mono) !important;
   font-size: 0.72rem !important;
 }
 
-.art-body .mermaid svg .edgeLabel rect {
-  fill: transparent !important;
-  stroke: none !important;
+.art-body .mermaid svg .edgeLabel rect,
+.art-body .mermaid svg .edgeLabel > rect,
+.art-body .mermaid svg .labelBkg {
+  fill: var(--node) !important;
+  stroke: var(--node-line) !important;
+  stroke-width: 1px !important;
+}
+
+.art-body .mermaid svg .edgeLabel foreignObject > div,
+.art-body .mermaid svg .edgeLabel foreignObject div {
+  background: var(--node) !important;
+  background-color: var(--node) !important;
+  color: var(--accent) !important;
+  border: 1px solid var(--node-line) !important;
+  border-radius: 5px;
+  padding: 0.12rem 0.38rem;
+}
+
+html[data-theme="light"] .art-body .mermaid svg .edgeLabel,
+html[data-theme="light"] .art-body .mermaid svg .edgeLabel span,
+html[data-theme="light"] .art-body .mermaid svg .edgeLabel p,
+html[data-theme="light"] .art-body .mermaid .edgeLabel,
+html[data-theme="light"] .art-body .mermaid svg .edgeLabel foreignObject div,
+html[data-theme="light"] .art-body .mermaid svg .edgeLabel foreignObject span,
+html[data-theme="light"] .art-body .mermaid svg .edgeLabel .labelBkg,
+html[data-theme="light"] .art-body .mermaid .labelBkg {
+  color: var(--ink) !important;
+  background-color: var(--node) !important;
+  background: var(--node) !important;
+}
+
+html[data-theme="light"] .art-body .mermaid svg .edgeLabel rect,
+html[data-theme="light"] .art-body .mermaid svg .edgeLabel > rect,
+html[data-theme="light"] .art-body .mermaid svg .labelBkg {
+  fill: var(--node) !important;
+  stroke: var(--node-line) !important;
+}
+
+html[data-theme="light"] .art-body .mermaid svg .edgeLabel foreignObject > div,
+html[data-theme="light"] .art-body .mermaid svg .edgeLabel foreignObject div {
+  background: var(--node) !important;
+  background-color: var(--node) !important;
+  color: var(--ink) !important;
+  border-color: var(--node-line) !important;
 }
 
 .art-body .mermaid svg basic,

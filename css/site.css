@@ -30,7 +30,7 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     html {
-      font-size: 112%;
+      font-size: 118%;
       background: var(--bg);
       /* Always reserve the classic bar so unlocking the intro does not
          shove the layout. overflow-x stays visible here — clip on body. */
@@ -708,6 +708,8 @@
     }
 
     .lede {
+      position: relative;
+      z-index: 4;
       margin-top: clamp(1.1rem, 3.2vh, 2rem);
       max-width: 33rem;
       font-size: clamp(1rem, 1.85vh, 1.14rem);
@@ -715,9 +717,12 @@
       letter-spacing: 0.01em;
       font-weight: 400;
       color: var(--soft);
+      overflow: visible;
     }
 
     .lede-lead {
+      position: relative;
+      z-index: 1;
       display: block;
       margin-bottom: 0.55rem;
       font-size: 1.14em;
@@ -729,6 +734,8 @@
     /* Long bio only after diving into the glass — keeps the desk monitor compact */
     .lede-more {
       display: block;
+      position: relative;
+      z-index: 2;
       max-height: 0;
       opacity: 0;
       overflow: hidden;
@@ -741,9 +748,10 @@
     }
 
     html.is-inside .lede-more {
-      max-height: 12em;
+      max-height: none;
       opacity: 1;
       transform: none;
+      overflow: visible;
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -1661,6 +1669,90 @@
 
     .band--work { max-width: var(--page-max); }
 
+    /* ================= about + corner buddy ================= */
+
+    .band--about {
+      padding-bottom: clamp(7rem, 18vh, 11rem);
+    }
+
+    .about-copy {
+      max-width: min(36rem, calc(100% - 7rem));
+      color: var(--soft);
+      font-size: 1.02rem;
+      line-height: 1.85;
+    }
+
+    .about-copy p {
+      margin: 0 0 1.05em;
+    }
+
+    .about-copy p:last-child { margin-bottom: 0; }
+
+    .about-copy b { color: var(--ink); font-weight: 600; }
+
+    .about-buddy {
+      position: fixed;
+      right: clamp(0.35rem, 2.2vw, 1.4rem);
+      bottom: clamp(0.2rem, 1.6vh, 1rem);
+      z-index: 28;
+      width: min(56vw, 340px);
+      aspect-ratio: 1;
+      pointer-events: none;
+      opacity: 0;
+      transform: translate3d(12%, 18%, 0) scale(0.88);
+      filter: drop-shadow(0 18px 28px rgba(0, 0, 0, 0.45));
+      transition:
+        opacity 0.48s ease,
+        transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+      will-change: opacity, transform;
+    }
+
+    .about-buddy.is-on {
+      opacity: 1;
+      transform: translate3d(0, 0, 0) scale(1);
+    }
+
+    .about-buddy-video {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      background: transparent;
+      mix-blend-mode: screen;
+      -webkit-mask-image: radial-gradient(ellipse 72% 78% at 50% 54%, #000 62%, transparent 100%);
+      mask-image: radial-gradient(ellipse 72% 78% at 50% 54%, #000 62%, transparent 100%);
+    }
+
+    @media (max-width: 720px) {
+      .about-copy { max-width: 100%; }
+      .band--about {
+        z-index: 2;
+        padding-bottom: clamp(7rem, 32vw, 10rem);
+      }
+      .band--about .band-lede,
+      .band--about .about-copy {
+        position: relative;
+        z-index: 1;
+      }
+      .about-buddy {
+        z-index: 0;
+        width: min(58vw, 236px);
+        right: 0.1rem;
+        bottom: 0;
+      }
+      .about-buddy.is-on {
+        opacity: 0.88;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .about-buddy {
+        transition: opacity 0.2s ease;
+        transform: none;
+      }
+      .about-buddy.is-on { transform: none; }
+    }
+
     .cases {
       list-style: none;
       display: grid;
@@ -2026,7 +2118,7 @@
     .case-shell--express:hover .harness-art-base,
     .harness-art:hover .harness-art-base,
     .harness-art.is-play .harness-art-base {
-      opacity: 0.9;
+      opacity: 0.6;
       transition: opacity 0.25s ease;
     }
 
@@ -2096,7 +2188,7 @@
     .harness-art:hover .harness-puff,
     .case-shell--harness:hover .harness-puff,
     .harness-art.is-play .harness-puff {
-      opacity: 1;
+      opacity: 0.6;
       transform: translate(-50%, var(--puff-rise, -72%)) scale(var(--puff-scale, 1.08)) rotate(var(--puff-rot, 0deg));
       filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.4));
       animation: harness-puff-burst 0.55s cubic-bezier(0.2, 1.25, 0.3, 1) both,
@@ -2118,7 +2210,7 @@
     .harness-art:hover .harness-ellipsis,
     .case-shell--harness:hover .harness-ellipsis,
     .harness-art.is-play .harness-ellipsis {
-      opacity: 1;
+      opacity: 0.6;
       transform: translate(-50%, -42%) scale(1.06);
       filter: drop-shadow(0 3px 10px rgba(0, 0, 0, 0.4));
       animation: harness-ellipsis-pop 0.55s cubic-bezier(0.2, 1.25, 0.3, 1) 0.48s both,
@@ -2131,11 +2223,11 @@
         transform: translate(-50%, -10%) scale(0.3) rotate(calc(var(--puff-rot, 0deg) - 12deg));
       }
       60% {
-        opacity: 1;
+        opacity: 0.6;
         transform: translate(calc(-50% + var(--puff-x, 0px)), var(--puff-peak, -82%)) scale(calc(var(--puff-scale, 1.08) + 0.08)) rotate(var(--puff-rot, 0deg));
       }
       100% {
-        opacity: 1;
+        opacity: 0.6;
         transform: translate(-50%, var(--puff-rise, -72%)) scale(var(--puff-scale, 1.08)) rotate(var(--puff-rot, 0deg));
       }
     }
@@ -2157,11 +2249,11 @@
         transform: translate(-50%, 20%) scale(0.3);
       }
       60% {
-        opacity: 1;
+        opacity: 0.6;
         transform: translate(-50%, -50%) scale(1.12);
       }
       100% {
-        opacity: 1;
+        opacity: 0.6;
         transform: translate(-50%, -42%) scale(1.06);
       }
     }
@@ -2205,7 +2297,7 @@
     .case-shell--express:hover .express-bubble,
     .harness-art:has(.express-bubble):hover .express-bubble,
     .harness-art.is-play .express-bubble {
-      opacity: 1;
+      opacity: 0.6;
       transform: translate(-50%, -8%) scale(1.04);
       filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.45));
       animation: express-bubble-pop 0.55s cubic-bezier(0.2, 1.25, 0.3, 1) both,
@@ -2218,11 +2310,11 @@
         transform: translate(-50%, 22%) scale(0.3);
       }
       60% {
-        opacity: 1;
+        opacity: 0.6;
         transform: translate(-50%, -14%) scale(1.1);
       }
       100% {
-        opacity: 1;
+        opacity: 0.6;
         transform: translate(-50%, -8%) scale(1.04);
       }
     }
@@ -2254,6 +2346,7 @@
       .case-shell--express:hover .express-bubble,
       .harness-art:has(.express-bubble):hover .express-bubble,
       .harness-art.is-play .express-bubble {
+        opacity: 0.6;
         transform: translate(-50%, -50%) scale(1);
         animation: none;
         filter: none;
@@ -2261,7 +2354,10 @@
     }
 
     .case-copy .harness-mark,
-    .recent .harness-mark {
+    .recent .harness-mark,
+    .lede .harness-mark,
+    .about-copy .harness-mark,
+    .band--about .band-lede .harness-mark {
       position: relative;
       display: inline-block;
       margin: 0 0.05em;
@@ -2285,11 +2381,26 @@
     .case-copy .harness-mark.is-on,
     .recent .harness-mark:hover,
     .recent .harness-mark:focus-visible,
-    .recent .harness-mark.is-on {
+    .recent .harness-mark.is-on,
+    .lede .harness-mark:hover,
+    .lede .harness-mark:focus-visible,
+    .lede .harness-mark.is-on,
+    .about-copy .harness-mark:hover,
+    .about-copy .harness-mark:focus-visible,
+    .about-copy .harness-mark.is-on,
+    .band--about .band-lede .harness-mark:hover,
+    .band--about .band-lede .harness-mark:focus-visible,
+    .band--about .band-lede .harness-mark.is-on {
       background: rgba(126, 175, 255, 0.32);
       box-shadow: 0 0 0 1px rgba(126, 175, 255, 0.35);
       outline: none;
-      z-index: 6;
+      z-index: 20;
+    }
+
+    .lede .harness-mark:hover,
+    .lede .harness-mark:focus-visible,
+    .lede .harness-mark.is-on {
+      z-index: 30;
     }
 
     .case-copy a.harness-mark {
@@ -2301,7 +2412,7 @@
       position: absolute;
       left: 50%;
       bottom: calc(100% + 0.65rem);
-      z-index: 8;
+      z-index: 40;
       display: grid;
       gap: 0.4rem;
       width: max-content;
@@ -2349,7 +2460,16 @@
     .case-copy .harness-mark.is-on .harness-bubble,
     .recent .harness-mark:hover .harness-bubble,
     .recent .harness-mark:focus-visible .harness-bubble,
-    .recent .harness-mark.is-on .harness-bubble {
+    .recent .harness-mark.is-on .harness-bubble,
+    .lede .harness-mark:hover .harness-bubble,
+    .lede .harness-mark:focus-visible .harness-bubble,
+    .lede .harness-mark.is-on .harness-bubble,
+    .about-copy .harness-mark:hover .harness-bubble,
+    .about-copy .harness-mark:focus-visible .harness-bubble,
+    .about-copy .harness-mark.is-on .harness-bubble,
+    .band--about .band-lede .harness-mark:hover .harness-bubble,
+    .band--about .band-lede .harness-mark:focus-visible .harness-bubble,
+    .band--about .band-lede .harness-mark.is-on .harness-bubble {
       opacity: 1;
       transform: translateX(-50%) translateY(0) scale(1);
     }
@@ -3327,6 +3447,10 @@
       object-fit: cover;
       object-position: center 42%;
       opacity: 0;
+      /* The handoff keeps both clips alive, so the idle one must not paint.
+         Opacity alone is not enough where video composites outside the page
+         layer; visibility still lets it buffer and advance currentTime. */
+      visibility: hidden;
       filter: none;
       transform: scale(1);
       transform-origin: 62% 36%;
@@ -3335,7 +3459,7 @@
     .star-bg video#starIntro { z-index: 2; }
     .star-bg video#starLoop { z-index: 1; }
 
-    .star-bg video.is-shown { opacity: 0.82; }
+    .star-bg video.is-shown { opacity: 0.82; visibility: visible; }
 
     @media (max-width: 700px) {
       .star-bg video.is-shown { opacity: 0.55; }

@@ -211,16 +211,19 @@
       starBg.style.removeProperty("background-position");
     }
 
+    // The still lives on data-poster, not the poster attribute: it is the sky
+    // the handoff ends on, and the clip opens on an almost empty one, so
+    // letting the element paint it pre-roll reads as a rewind.
     function showStarPosterFallback() {
       if (!starBg) return;
-      const poster = (starIntro && starIntro.getAttribute("poster")) || "";
+      const poster = (starIntro && starIntro.getAttribute("data-poster")) || "";
       if (poster) {
         starBg.style.backgroundImage = `url("${poster}")`;
         starBg.style.backgroundSize = "cover";
         starBg.style.backgroundPosition = "center";
       }
       starBg.classList.add("is-fallback");
-      // Prefer intro element (keeps poster attr / last frame) over blank loop
+      // Prefer the intro element, which may still hold a real last frame
       if (starIntro) showStar(starIntro);
     }
 
@@ -497,8 +500,9 @@
       if (on && !starPlayed && !starArmed) {
         starArmed = true;
         starLooping = false;
-        // g1.1: keep poster until a real intro frame advances — never clear-then-wait
-        showStarPosterFallback();
+        // The clip fills an empty sky, so it is its own opening frame — showing
+        // the finished sky first and then starting playback rewinds on screen.
+        // The still is only worth it once the clip is known not to be coming.
         showStar(starIntro);
         playVid(starIntro, showStarPosterFallback);
         waitForAdvance(starIntro, (ok) => {
@@ -1128,15 +1132,95 @@
     });
 
     /* ============================================================
-       Intro: sign, hand the signature to the desk, then release
+       Intro: signature doubles as loading — write while assets warm,
+       then hand the mark to the desk once critical media is ready.
        ============================================================ */
 
     const T_WRITE = 240;    // pen touches down
-    const T_LIGHT = 2380;   // the desk lights up behind the ink
-    const T_FLY = 3060;     // the signature shrinks into the screen
-    const T_DONE = 4180;    // scroll is released
+    const T_MIN_HOLD = 2380; // earliest the desk may light (write nearly done)
+    const T_FLY_AFTER = 680; // after light-up → fly
+    const T_LAND_AFTER = 780; // fly → land
+    const T_DONE_AFTER = 1800; // after light-up → release scroll
+    const ASSET_WAIT_MS = 12000;
+    const WRITE_MS = 2050;
 
     let introTimers = [];
+    let introAssetsReady = false;
+    let introProceeded = false;
+    const cicdVideoEl = document.getElementById("cicdVideo");
+
+    function collectIntroAssets() {
+      const cfg = window.COCOFHU || {};
+      const urls = [];
+      const push = (u) => {
+        if (!u || urls.indexOf(u) >= 0) return;
+        urls.push(u);
+      };
+      push(cfg.starIntro || STAR_INTRO_SRC);
+      push(cfg.starLoop || (starLoop && starLoop.getAttribute("src")));
+      push(cfg.cicd || (cicdVideoEl && cicdVideoEl.getAttribute("src")));
+      push(cfg.cicdPoster);
+      push(cfg.starPoster || (starIntro && starIntro.getAttribute("data-poster")));
+      if (starIntro && starIntro.currentSrc) push(starIntro.currentSrc);
+      if (starLoop && starLoop.currentSrc) push(starLoop.currentSrc);
+      return urls.filter(Boolean);
+    }
+
+    function preloadMediaUrl(url) {
+      return new Promise((resolve) => {
+        let settled = false;
+        const done = () => {
+          if (settled) return;
+          settled = true;
+          resolve();
+        };
+        const timer = setTimeout(done, ASSET_WAIT_MS);
+        const finish = () => {
+          clearTimeout(timer);
+          done();
+        };
+        if (/\.(mp4|webm|ogg)(\?|$)/i.test(url)) {
+          const v = document.createElement("video");
+          v.muted = true;
+          v.playsInline = true;
+          v.preload = "auto";
+          v.addEventListener("canplaythrough", finish, { once: true });
+          v.addEventListener("loadeddata", finish, { once: true });
+          v.addEventListener("error", finish, { once: true });
+          v.src = url;
+          try { v.load(); } catch (_) { finish(); }
+          return;
+        }
+        const img = new Image();
+        img.onload = finish;
+        img.onerror = finish;
+        img.src = url;
+      });
+    }
+
+    function warmHeroVideos() {
+      // Kick the real elements so release() / kickPlayback hit warm cache
+      loadStarSrc();
+      if (cicdVideoEl) {
+        try { cicdVideoEl.load(); } catch (_) {}
+      }
+    }
+
+    function preloadCriticalAssets() {
+      warmHeroVideos();
+      const jobs = collectIntroAssets().map(preloadMediaUrl);
+      if (document.fonts && document.fonts.ready) {
+        jobs.push(Promise.race([
+          document.fonts.ready.then(() => {}),
+          new Promise((r) => setTimeout(r, 2500))
+        ]));
+      }
+      return Promise.all(jobs).then(() => {
+        introAssetsReady = true;
+      }).catch(() => {
+        introAssetsReady = true;
+      });
+    }
 
     // Hold the page at the top until the signature has been handed over,
     // without toggling overflow (which would flash the scrollbar away)
@@ -1213,6 +1297,26 @@
       });
     }
 
+    function proceedIntroReveal() {
+      if (introDone || introProceeded) return;
+      introProceeded = true;
+      root.classList.add("sig-written");
+      lightUp();
+      const at = (ms, fn) => introTimers.push(setTimeout(fn, ms));
+      at(T_FLY_AFTER, () => {
+        if (introDone) return;
+        const target = flyTarget();
+        if (!target) { land(); return; }
+        sigFly.classList.add("is-flying");
+        void sigFly.offsetWidth;
+        sigFly.style.transform = target;
+        introTimers.push(setTimeout(land, T_LAND_AFTER));
+      });
+      at(T_DONE_AFTER, () => {
+        if (!introDone) release();
+      });
+    }
+
     let introSkipArmed = false;
     let introTouchY = null;
 
@@ -1220,6 +1324,8 @@
       introTimers.forEach(clearTimeout);
       introTimers = [];
       introDone = false;
+      introProceeded = false;
+      introAssetsReady = false;
       introSkipArmed = false;
       introTouchY = null;
       diveArmed = false;
@@ -1246,41 +1352,49 @@
       // Ignore accidental first taps / Safari chrome gestures for a beat
       introTimers.push(setTimeout(() => { introSkipArmed = true; }, 1400));
 
+      const assetsP = preloadCriticalAssets();
+      const at = (ms, fn) => introTimers.push(setTimeout(fn, ms));
+
       if (reduceMotion) {
-        // Still show the static signature briefly — don't jump straight to the desk
         root.classList.add("sig-written");
-        const at = (ms, fn) => introTimers.push(setTimeout(fn, ms));
-        at(900, () => { lightUp(); land(); });
-        at(1500, release);
+        Promise.all([
+          assetsP,
+          new Promise((r) => at(900, r))
+        ]).then(() => {
+          if (introDone) return;
+          lightUp();
+          land();
+          at(600, () => { if (!introDone) release(); });
+        });
         return;
       }
 
       // Reflow so the write animation always restarts from a clean slate
       void root.offsetWidth;
 
-      const at = (ms, fn) => introTimers.push(setTimeout(fn, ms));
-
       at(T_WRITE, () => root.classList.add("sig-writing"));
-      at(T_LIGHT, lightUp);
-      at(T_FLY, () => {
-        const target = flyTarget();
-        if (!target) { land(); return; }
-        sigFly.classList.add("is-flying");
-        void sigFly.offsetWidth;
-        sigFly.style.transform = target;
-        // The real wordmark takes over just before the flyer fades out
-        introTimers.push(setTimeout(land, 780));
+      // If assets are slow, freeze on a fully written mark after the pen finishes
+      at(T_WRITE + WRITE_MS, () => {
+        if (introDone || introProceeded) return;
+        root.classList.add("sig-written");
       });
-      at(T_DONE, release);
+
+      const minHold = new Promise((r) => at(T_MIN_HOLD, r));
+      Promise.all([assetsP, minHold]).then(() => {
+        if (introDone) return;
+        proceedIntroReveal();
+      });
     }
 
     function skipIntro() {
       if (introDone || !introSkipArmed) return;
       introTimers.forEach(clearTimeout);
       introTimers = [];
+      introProceeded = true;
       sigFly.classList.remove("is-flying");
       root.classList.remove("sig-writing");
       root.classList.add("sig-written");
+      warmHeroVideos();
       lightUp();
       land();
       release();
@@ -1438,20 +1552,24 @@
       arts.forEach((el) => io.observe(el));
     })();
 
-    /* AI Harness: keep one text bubble visible while hovering a mark */
+    /* Keep one text bubble visible while hovering a mark */
     (() => {
-      const shell = document.querySelector(".case-shell--harness");
-      if (!shell) return;
-      const marks = [...shell.querySelectorAll(".harness-mark")];
-      marks.forEach((mark) => {
-        mark.addEventListener("pointerenter", () => {
-          marks.forEach((m) => m.classList.toggle("is-on", m === mark));
+      const roots = [
+        ...document.querySelectorAll(".case-shell--harness, .lede, .recent, .band--about")
+      ];
+      roots.forEach((root) => {
+        const marks = [...root.querySelectorAll(".harness-mark")];
+        if (!marks.length) return;
+        marks.forEach((mark) => {
+          mark.addEventListener("pointerenter", () => {
+            marks.forEach((m) => m.classList.toggle("is-on", m === mark));
+          });
+          mark.addEventListener("pointerleave", () => mark.classList.remove("is-on"));
+          mark.addEventListener("focus", () => {
+            marks.forEach((m) => m.classList.toggle("is-on", m === mark));
+          });
+          mark.addEventListener("blur", () => mark.classList.remove("is-on"));
         });
-        mark.addEventListener("pointerleave", () => mark.classList.remove("is-on"));
-        mark.addEventListener("focus", () => {
-          marks.forEach((m) => m.classList.toggle("is-on", m === mark));
-        });
-        mark.addEventListener("blur", () => mark.classList.remove("is-on"));
       });
     })();
 
@@ -1659,4 +1777,120 @@
     } else {
       shStart();
     }
+
+    /* About: corner buddy — once from 0, ease-in speedup, hold last frame */
+    (() => {
+      const band = document.getElementById("about");
+      const buddy = document.getElementById("aboutBuddy");
+      const video = document.getElementById("aboutBuddyVideo");
+      if (!band || !buddy || !video) return;
+
+      const RATE_MIN = 1;
+      const RATE_MAX = 2;
+      // Ease-in quint: slow start, then ramps hard (not linear)
+      const easeIn = (t) => {
+        const x = Math.min(1, Math.max(0, t));
+        return x * x * x * x * x;
+      };
+      const rateAt = (progress) => RATE_MIN + (RATE_MAX - RATE_MIN) * easeIn(progress);
+
+      let visible = false;
+      let rateRaf = 0;
+      video.loop = false;
+
+      const stopRateDrive = () => {
+        if (rateRaf) {
+          cancelAnimationFrame(rateRaf);
+          rateRaf = 0;
+        }
+      };
+
+      const driveRate = () => {
+        rateRaf = 0;
+        if (!visible || video.paused || video.ended) return;
+        const dur = video.duration;
+        const progress = isFinite(dur) && dur > 0 ? video.currentTime / dur : 0;
+        try { video.playbackRate = rateAt(progress); } catch (_) {}
+        rateRaf = requestAnimationFrame(driveRate);
+      };
+
+      const holdLastFrame = () => {
+        stopRateDrive();
+        video.pause();
+        try { video.playbackRate = 1; } catch (_) {}
+      };
+
+      video.addEventListener("ended", holdLastFrame);
+
+      const playBuddy = () => {
+        if (visible) return;
+        visible = true;
+        buddy.classList.add("is-on");
+        buddy.setAttribute("aria-hidden", "false");
+        if (reduceMotion) {
+          const showStill = () => {
+            const dur = video.duration;
+            if (isFinite(dur) && dur > 0) {
+              try { video.currentTime = Math.max(0, dur - 0.08); } catch (_) {}
+            }
+            video.pause();
+          };
+          if (video.readyState >= 1) showStill();
+          else video.addEventListener("loadedmetadata", showStill, { once: true });
+          try { video.load(); } catch (_) {}
+          return;
+        }
+
+        stopRateDrive();
+        try { video.playbackRate = RATE_MIN; } catch (_) {}
+
+        const kick = () => {
+          const p = video.play();
+          if (p && typeof p.catch === "function") p.catch(() => {});
+          if (!rateRaf) rateRaf = requestAnimationFrame(driveRate);
+        };
+
+        const startFromZero = () => {
+          try {
+            video.currentTime = 0;
+            if (video.seeking) video.addEventListener("seeked", kick, { once: true });
+            else kick();
+          } catch (_) {
+            kick();
+          }
+        };
+
+        if (video.readyState >= 1) startFromZero();
+        else {
+          video.addEventListener("loadedmetadata", startFromZero, { once: true });
+          try { video.load(); } catch (_) {}
+          kick();
+        }
+      };
+
+      const stopBuddy = () => {
+        if (!visible) return;
+        visible = false;
+        stopRateDrive();
+        buddy.classList.remove("is-on");
+        buddy.setAttribute("aria-hidden", "true");
+        video.pause();
+        try { video.playbackRate = 1; } catch (_) {}
+        window.setTimeout(() => {
+          if (visible) return;
+          try { video.currentTime = 0; } catch (_) {}
+        }, 520);
+      };
+
+      if (!("IntersectionObserver" in window)) {
+        playBuddy();
+        return;
+      }
+
+      const io = new IntersectionObserver(([entry]) => {
+        if (entry.isIntersecting && entry.intersectionRatio >= 0.28) playBuddy();
+        else stopBuddy();
+      }, { threshold: [0, 0.28, 0.55, 1], rootMargin: "0px 0px -8% 0px" });
+      io.observe(band);
+    })();
 })();
