@@ -672,18 +672,22 @@ html { scrollbar-width: thin; scrollbar-color: rgba(28, 25, 21, 0.35) transparen
         <span class="count">ME</span>
       </div>
       
-      <p class="band-lede reveal" style="--d:100ms">滑到这里打个招呼</p>
+      <p class="band-lede reveal" style="--d:100ms">这个人很神秘</p>
       
       <div class="about-copy reveal" style="--d:140ms">
         
-        <p>Hello，大家好，我是 <b>cocofhu</b>。</p>
-        
-        <p>99年，INTP，<b>后端研发</b>。目前负责 SkillHub 产品研发，也在探索 AI Harness——想做有趣、好用的产品，帮到更多人，也和大家一起进步。</p>
+        <p>这个人很神秘</p>
         
       </div>
     </section>
 
-    <aside class="about-buddy" id="aboutBuddy" aria-hidden="true">
+    <aside
+      class="about-buddy"
+      id="aboutBuddy"
+      aria-hidden="true"
+      data-image="/assets/about-me.webp?v=1"
+      data-still="/assets/about-me-last.webp?v=1"
+    >
       <video
         id="aboutBuddyVideo"
         class="about-buddy-video"
@@ -696,6 +700,13 @@ html { scrollbar-width: thin; scrollbar-color: rgba(28, 25, 21, 0.35) transparen
         preload="none"
         aria-label="关于我"
       ></video>
+      <img
+        id="aboutBuddyImage"
+        class="about-buddy-image"
+        alt=""
+        decoding="async"
+        draggable="false"
+      />
     </aside>
   </main>
 

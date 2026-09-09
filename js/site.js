@@ -1783,7 +1783,35 @@
       const band = document.getElementById("about");
       const buddy = document.getElementById("aboutBuddy");
       const video = document.getElementById("aboutBuddyVideo");
+      let image = document.getElementById("aboutBuddyImage");
       if (!band || !buddy || !video) return;
+
+      const isWeChat = /MicroMessenger/i.test(navigator.userAgent);
+      const isSafari = /Safari/i.test(navigator.userAgent) &&
+        !/Chrome|Chromium|Android|Edg|OPR/i.test(navigator.userAgent);
+      // VP9 alpha does not survive iOS / Safari / WeChat; the RGB plate is olive.
+      const useImage = !!(image && (coarsePointer || isIOS || isWeChat || isSafari || window.innerWidth <= 720));
+      const imageUrl = (buddy.getAttribute("data-image") || "").trim();
+      const stillUrl = (buddy.getAttribute("data-still") || imageUrl).trim();
+
+      if (useImage) {
+        buddy.classList.add("is-image");
+        video.removeAttribute("src");
+        try { video.load(); } catch (_) {}
+      }
+
+      const restartImage = (url) => {
+        if (!image || !url) return;
+        const next = image.cloneNode(false);
+        next.id = "aboutBuddyImage";
+        next.className = image.className;
+        next.alt = image.alt || "";
+        next.setAttribute("decoding", "async");
+        next.setAttribute("draggable", "false");
+        next.src = url;
+        image.replaceWith(next);
+        image = next;
+      };
 
       const RATE_MIN = 1;
       const RATE_MAX = 2;
@@ -1820,13 +1848,17 @@
         try { video.playbackRate = 1; } catch (_) {}
       };
 
-      video.addEventListener("ended", holdLastFrame);
+      if (!useImage) video.addEventListener("ended", holdLastFrame);
 
       const playBuddy = () => {
         if (visible) return;
         visible = true;
         buddy.classList.add("is-on");
         buddy.setAttribute("aria-hidden", "false");
+        if (useImage) {
+          restartImage(reduceMotion ? stillUrl : imageUrl);
+          return;
+        }
         if (reduceMotion) {
           const showStill = () => {
             const dur = video.duration;
@@ -1874,6 +1906,13 @@
         stopRateDrive();
         buddy.classList.remove("is-on");
         buddy.setAttribute("aria-hidden", "true");
+        if (useImage) {
+          window.setTimeout(() => {
+            if (visible || !image) return;
+            image.removeAttribute("src");
+          }, 520);
+          return;
+        }
         video.pause();
         try { video.playbackRate = 1; } catch (_) {}
         window.setTimeout(() => {
