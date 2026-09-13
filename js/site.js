@@ -70,12 +70,21 @@
       });
     }
 
+    function firstScrollBand() {
+      return (
+        document.getElementById("work") ||
+        document.getElementById("recent") ||
+        document.getElementById("writing") ||
+        document.getElementById("about")
+      );
+    }
+
     if (screenCue) {
       screenCue.addEventListener("click", () => {
-        const work = document.getElementById("work");
-        if (!work) return;
+        const band = firstScrollBand();
+        if (!band) return;
         screenCue.classList.remove("is-shown");
-        const y = work.getBoundingClientRect().top + window.scrollY - Math.round(window.innerHeight * 0.06);
+        const y = band.getBoundingClientRect().top + window.scrollY - Math.round(window.innerHeight * 0.06);
         smoothScrollTo(y, 680);
       });
     }
@@ -559,6 +568,8 @@
     let eFloor = -1;           // -1 = not fully inside yet
     let rigCollapsed = false;
     const workBand = document.getElementById("work");
+    // When #work is omitted (work.hidden), cue / scroll target falls back to later bands.
+    const scrollBand = workBand || firstScrollBand();
     const pinEl = document.querySelector(".pin");
     const rig = document.getElementById("rig");
 
@@ -591,8 +602,8 @@
         return;
       }
       let showScreenCue = true;
-      if (workBand) {
-        const wt = workTop != null ? workTop : workBand.getBoundingClientRect().top;
+      if (scrollBand) {
+        const wt = workTop != null ? workTop : scrollBand.getBoundingClientRect().top;
         if (wt < window.innerHeight * 0.85) showScreenCue = false;
       }
       if (pinEl) {
@@ -629,7 +640,7 @@
       // Read geometry before any style writes so we do not force a sync layout
       let workTop, pinRect;
       if (introDone && inside && !rigCollapsed) {
-        if (workBand) workTop = workBand.getBoundingClientRect().top;
+        if (scrollBand) workTop = scrollBand.getBoundingClientRect().top;
         if (pinEl) pinRect = pinEl.getBoundingClientRect();
       }
 
