@@ -57,6 +57,18 @@
 
   };
 
+  // 猫跑跑 (Han Li cultivator cat, original drawing): hair bun + wooden pin, dark ink daoist robe with crossed collar, gourd, rides a flying sword
+  V.hanli = { body: BODY_ROUND, fill: '#fffaf4',
+    face: '<path d="M76 98 L91 102 M124 98 L109 102" stroke="' + INK + '" stroke-width="3.5" stroke-linecap="round"/>' + eyesDot + '<path ' + S + 'd="M94 126 Q100 123 106 126" fill="none"/>',
+    extra: '<path class="k" d="M58 128 Q100 120 142 128 L142 160 Q131 150 121 162 Q110 150 100 162 Q90 150 79 162 Q69 150 58 160Z" fill="#2e3347"/>' +
+      '<path class="k" stroke-width="3" d="M80 124 L100 150 L120 124" fill="#fffdf9"/><path d="M100 150 L100 160" stroke="' + INK + '" stroke-width="3"/>' +
+      '<path class="k" stroke-width="3" d="M66 140 h68" fill="none" stroke="#6b7390" stroke-dasharray="0"/>' +
+      '<circle class="k" cx="100" cy="58" r="13" fill="#3b2f4a"/><path class="k" stroke-width="3" d="M76 60 L126 50" stroke="#c9a56b" fill="none"/><circle cx="76" cy="60" r="3.5" fill="#c9a56b" stroke="' + INK + '" stroke-width="2.5"/>' +
+      '<path class="k" d="M68 84 Q100 62 132 84 Q118 74 100 76 Q82 74 68 84Z" fill="#3b2f4a"/>' +
+      '<g class="c-sword"><path class="k" stroke-width="3" d="M62 170 L150 170 L166 175 L150 180 L62 180Z" fill="#dfe6ff"/><path d="M70 175 H148" stroke="#aab4d9" stroke-width="2" stroke-linecap="round"/><path class="k" stroke-width="3" d="M58 164 v22" fill="none"/><path d="M40 175 H56" stroke="' + INK + '" stroke-width="6" stroke-linecap="round"/><path d="M38 175 l-8 -5 M38 175 l-8 5" stroke="#e0466b" stroke-width="3" stroke-linecap="round"/></g>' +
+      '<g class="c-swing"><circle class="k" stroke-width="3" cx="44" cy="134" r="11" fill="#ffd36e"/><circle class="k" stroke-width="3" cx="44" cy="116" r="7" fill="#ffd36e"/><path d="M38 124 h12" stroke="#e0466b" stroke-width="3" stroke-linecap="round"/><path class="k" stroke-width="3" d="M44 109 v-4" fill="none"/></g>',
+    fx: '' + star(30, 50, '#8d95b3', 's1') + star(172, 128, '#ffd1df', 's3') };
+
   function catSVG(name, mini) {
     var v = V[name] || V.yume;
     var shadow = mini ? '' : '<ellipse class="c-shadow" cx="100" cy="186" rx="40" ry="7" fill="' + INK + '" opacity=".18"/>';
@@ -137,7 +149,7 @@
     graspSub: 'A visual workflow for multiple coding agents · open source',
     buddyAria: 'Back to top',
     lines: ['Hi there~', "I'm cocofhu's little ghost", 'Heading out on a heist tonight~', 'Poke me again?', 'Working on SkillHub~', 'Whoosh—'],
-    tf: ['Back to me~ Working on SkillHub!', 'coco, Phantom Thief!', 'All in! All in!', 'Transform! Night-sky Cat', 'Transform! Sakura Cat', 'Transform! Soda Cat', 'Transform! Sleepy Cat'],
+    tf: ['Back to me~ Working on SkillHub!', 'coco, Phantom Thief!', 'All in! All in!', "Even if I burn my blood essence, I will survive. I won't die here!", 'Transform! Night-sky Cat', 'Transform! Sakura Cat', 'Transform! Soda Cat', 'Transform! Sleepy Cat'],
     sections: { recent: "What I'm up to~", about: 'Say hi!' },
     langAria: 'Switch language / 切换语言'
   };
@@ -145,7 +157,7 @@
     title: document.title,
     desc: (document.querySelector('meta[name="description"]') || {}).content || '',
     lines: ['你好呀~', '我是 cocofhu 的小幽灵', '今晚也要出动哦', '再戳一下？', '在做 SkillHub 哦', '咻——'],
-    tf: ['变回来啦~ 在做 SkillHub 哦', 'coco 卡酷一', '梭哈 梭哈', '变身！夜空猫', '变身！樱花猫', '变身！汽水猫', '变身！困困猫'],
+    tf: ['变回来啦~ 在做 SkillHub 哦', 'coco 卡酷一', '梭哈 梭哈', '燃烧精血也要活下来，怎能命丧于此！', '变身！夜空猫', '变身！樱花猫', '变身！汽水猫', '变身！困困猫'],
     sections: { recent: '最近在做~', about: '打个招呼！' },
     langAria: '切换语言 / Switch language'
   };
@@ -359,9 +371,9 @@
   var li = 0;
   if (say) say.textContent = tr().lines[0];
   /* click = magical-girl transform: ghost cat cycles through forms and back */
-  var FORMS = ['yume', 'kaito', 'kurumi', 'yozora', 'sakura', 'soda', 'nemu'];
+  var FORMS = ['yume', 'kaito', 'kurumi', 'hanli', 'yozora', 'sakura', 'soda', 'nemu'];
   var fi = 0, sayKey = null;
-  onLangChange.push(function (T) { if (say) say.textContent = sayKey === null ? T.lines[li] : T.tf[sayKey]; });
+  onLangChange.push(function (T) { if (say) { say.textContent = sayKey === null ? T.lines[li] : T.tf[sayKey]; say.classList.toggle('say--long', say.textContent.length > 14); } });
   if (heroCat) {
     var eyes = heroCat.querySelector('.c-eyes');
     if (!reduce) {
@@ -375,6 +387,7 @@
     }
     var slot = heroCat.querySelector('[data-cat]');
     var stage = heroCat.parentNode;
+    var burnT = 0;
     function swap() {
       fi = (fi + 1) % FORMS.length;
       slot.setAttribute('data-cat', FORMS[fi]);
@@ -383,6 +396,9 @@
       if (ne && eyes) ne.style.transform = eyes.style.transform;
       eyes = ne;
       sayKey = fi; say.textContent = tr().tf[fi];
+      say.classList.toggle('say--long', say.textContent.length > 14);
+      clearTimeout(burnT); heroCat.classList.remove('hanli-burn');
+      if (FORMS[fi] === 'hanli' && !reduce) burnT = setTimeout(function () { heroCat.classList.add('hanli-burn'); burnT = setTimeout(function () { heroCat.classList.remove('hanli-burn'); }, 1200); }, 300);
       say.classList.remove('pop-say'); void say.offsetWidth; say.classList.add('pop-say');
     }
     /* jelly transform driven by a spring: press -> squash, swap at the bottom, spring back up (~350ms).
@@ -406,6 +422,7 @@
     function transform() {
       heroCat.classList.add('tf');
       if (reduce) { swap(); return; }
+      clearTimeout(burnT); heroCat.classList.remove('hanli-burn');
       target = 1; swapArmed = true;
       if (!raf) { last = performance.now(); raf = requestAnimationFrame(step); }
     }

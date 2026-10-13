@@ -261,6 +261,18 @@ html:not([data-lang="en"]) .tape--pink .tape-run span{font-family:var(--f-zh);fo
 .hero-cat.pressed>[data-cat]{transform:scale(1.03,.95);transition:transform .09s cubic-bezier(.3,0,.5,1)}
 .rm .hero-cat>[data-cat]{transition:none}
 .hero-cat .c-squash{transform-origin:50% 100%}
+.say.say--long{white-space:normal;width:max-content;max-width:min(240px,60vw);line-height:1.35;left:52%;top:-10%}
+/* 猫跑跑: burn blood essence (rose-crimson aura) -> blood-escape dash with afterimages -> back and settle */
+.hero-cat.hanli-burn .cat{animation:hanli-burn 1.2s forwards}
+@keyframes hanli-burn{
+  0%{transform:none;filter:none;animation-timing-function:cubic-bezier(.3,0,.5,1)}
+  22%{transform:scale(1.05);filter:drop-shadow(0 0 6px #e0466b) drop-shadow(0 0 14px rgba(224,70,107,.7)) saturate(1.2);animation-timing-function:cubic-bezier(.6,0,.8,.5)}
+  36%{transform:translateX(45%) skewX(-12deg) scale(1.1,.94);opacity:.9;filter:drop-shadow(0 0 6px #e0466b) drop-shadow(0 0 14px rgba(224,70,107,.7)) drop-shadow(-26px 0 0 rgba(224,70,107,.45)) drop-shadow(-26px 0 0 rgba(224,70,107,.28)) drop-shadow(-26px 0 0 rgba(224,70,107,.15));animation-timing-function:linear}
+  46%{transform:translateX(130%) skewX(-16deg) scale(1.14,.9);opacity:.35;filter:drop-shadow(-26px 0 0 rgba(224,70,107,.45)) drop-shadow(-26px 0 0 rgba(224,70,107,.28)) drop-shadow(-26px 0 0 rgba(224,70,107,.15))}
+  47%{transform:translateX(-130%) skewX(-16deg) scale(1.14,.9);opacity:.35;filter:drop-shadow(-26px 0 0 rgba(224,70,107,.45)) drop-shadow(-26px 0 0 rgba(224,70,107,.28)) drop-shadow(-26px 0 0 rgba(224,70,107,.15));animation-timing-function:cubic-bezier(.2,.6,.4,1)}
+  62%{transform:translateX(-30%) skewX(-10deg) scale(1.08,.95);opacity:.9;filter:drop-shadow(0 0 6px #e0466b) drop-shadow(0 0 14px rgba(224,70,107,.7)) drop-shadow(-26px 0 0 rgba(224,70,107,.45)) drop-shadow(-26px 0 0 rgba(224,70,107,.28)) drop-shadow(-26px 0 0 rgba(224,70,107,.15))}
+  80%{transform:translateX(4%) skewX(4deg);opacity:1;filter:drop-shadow(0 0 6px rgba(224,70,107,.6));animation-timing-function:cubic-bezier(.4,0,.6,1)}
+  100%{transform:none;filter:none}}
 .stage-hint{position:absolute;left:0;right:0;bottom:30px;margin:0;text-align:center;font:600 12px/1 var(--f-zh);letter-spacing:.2em;opacity:.55}
 .spark-p{position:absolute;left:50%;top:45%;width:14px;height:14px;border:2.5px solid var(--ink);border-radius:4px;pointer-events:none;z-index:5;animation:spark .85s var(--io) forwards}
 @keyframes spark{0%{transform:translate(-50%,-50%) scale(.2) rotate(0)}60%{opacity:1}100%{transform:translate(calc(-50% + var(--x)),calc(-50% + var(--y))) scale(1) rotate(var(--r));opacity:0}}
